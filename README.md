@@ -63,3 +63,4 @@ python3 -m http.server 8080
 Yeni uygulama eklediğinizde `sitemap.xml` dosyasına `/app.html?id=<id>` adresini de ekleyin.
 # boznivo
 # boznivo
+# boznivo
