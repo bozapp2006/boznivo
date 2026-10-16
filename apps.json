@@ -1,43 +1,74 @@
 {
-  "_readme": "Yeni bir uygulama eklemek için 'apps' dizisine yeni bir obje ekleyin. Zorunlu alanlar: id, name, tagline, icon. 'status' alanı 'live' (yayında) veya 'soon' (yakında) olabilir. 'privacyUrl' boş bırakılırsa otomatik olarak privacy.html?app=<id> kullanılır. 'screenshots' (isteğe bağlı) ekran görüntüsü yolları dizisidir; detay sayfasında galeri olarak gösterilir.",
+  "_readme": "Yeni uygulama için 'apps' dizisine bir obje ekleyin. Zorunlu: id, name, icon. Metin alanları (tagline, description, category, features) düz metin olabilir ya da iki dilde {\"tr\": \"...\", \"en\": \"...\"} şeklinde yazılabilir. status: 'live' veya 'soon'. featured: true olan uygulama ana sayfadaki telefonda gösterilir (yoksa ilk yayındaki). privacyUrl boşsa /privacy.html?app=<id> kullanılır. screenshots isteğe bağlıdır.",
   "apps": [
     {
       "id": "focusly",
       "name": "Focusly",
-      "tagline": "Odaklan, ilerle, tekrarla.",
-      "description": "Pomodoro tekniğiyle çalışma seanslarınızı planlayan, dikkat dağıtıcıları azaltan ve ilerlemenizi sade grafiklerle gösteren minimal bir odak asistanı.",
+      "featured": true,
+      "tagline": {
+        "tr": "Odaklan, ilerle, tekrarla.",
+        "en": "Focus, progress, repeat."
+      },
+      "description": {
+        "tr": "Pomodoro tekniğiyle çalışma seanslarınızı planlayan, dikkat dağıtıcıları azaltan ve ilerlemenizi sade grafiklerle gösteren minimal bir odak asistanı.",
+        "en": "A minimal focus companion that plans your work sessions with the Pomodoro technique, cuts down distractions and shows your progress in clean, simple charts."
+      },
       "icon": "assets/images/apps/focusly.svg",
-      "category": "Verimlilik",
+      "category": { "tr": "Verimlilik", "en": "Productivity" },
       "platforms": ["iPhone", "iPad"],
       "status": "live",
       "accent": "#8b5cf6",
       "appStoreUrl": "https://apps.apple.com/app/id0000000000",
       "privacyUrl": "",
-      "features": [
-        "Özelleştirilebilir Pomodoro zamanlayıcı",
-        "Günlük ve haftalık ilerleme grafikleri",
-        "Ana ekran ve kilit ekranı widget'ları",
-        "Hesap gerektirmez, veriler cihazda kalır"
-      ]
+      "features": {
+        "tr": [
+          "Özelleştirilebilir Pomodoro zamanlayıcı",
+          "Günlük ve haftalık ilerleme grafikleri",
+          "Ana ekran ve kilit ekranı widget'ları",
+          "Hesap gerektirmez, veriler cihazda kalır"
+        ],
+        "en": [
+          "Customizable Pomodoro timer",
+          "Daily and weekly progress charts",
+          "Home and Lock Screen widgets",
+          "No account needed, data stays on device"
+        ]
+      },
+      "screenshots": []
     },
     {
       "id": "budgetly",
       "name": "Budgetly",
-      "tagline": "Harcamalarınız tek bakışta.",
-      "description": "Gelir ve giderlerinizi saniyeler içinde kaydedin, kategorilere ayırın ve aylık bütçenizi hiçbir karmaşa olmadan takip edin.",
+      "tagline": {
+        "tr": "Harcamalarınız tek bakışta.",
+        "en": "Your spending at a glance."
+      },
+      "description": {
+        "tr": "Gelir ve giderlerinizi saniyeler içinde kaydedin, kategorilere ayırın ve aylık bütçenizi hiçbir karmaşa olmadan takip edin.",
+        "en": "Log income and expenses in seconds, sort them into categories and keep track of your monthly budget without any clutter."
+      },
       "icon": "assets/images/apps/budgetly.svg",
-      "category": "Finans",
+      "category": { "tr": "Finans", "en": "Finance" },
       "platforms": ["iPhone"],
       "status": "soon",
       "accent": "#10b981",
       "appStoreUrl": "",
       "privacyUrl": "",
-      "features": [
-        "Tek dokunuşla harcama ekleme",
-        "Akıllı kategori önerileri",
-        "iCloud ile cihazlar arası senkronizasyon",
-        "Face ID ile uygulama kilidi"
-      ]
+      "features": {
+        "tr": [
+          "Tek dokunuşla harcama ekleme",
+          "Akıllı kategori önerileri",
+          "iCloud ile cihazlar arası senkronizasyon",
+          "Face ID ile uygulama kilidi"
+        ],
+        "en": [
+          "Add expenses with a single tap",
+          "Smart category suggestions",
+          "Sync across devices with iCloud",
+          "App lock with Face ID"
+        ]
+      },
+      "screenshots": []
     }
   ]
 }

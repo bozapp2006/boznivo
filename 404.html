@@ -3,20 +3,42 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sayfa bulunamadı — Boznivo</title>
+  <title data-i18n="nf.title">Sayfa bulunamadı — Boznivo</title>
   <meta name="robots" content="noindex">
   <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml">
-  <style>
-    body{margin:0;min-height:100vh;display:grid;place-items:center;background:#09090f;color:#a1a1aa;font-family:-apple-system,Inter,system-ui,sans-serif;text-align:center;padding:1rem}
-    h1{font-size:5rem;margin:0;background:linear-gradient(90deg,#a5b4fc,#c084fc,#f472b6);-webkit-background-clip:text;background-clip:text;color:transparent}
-    a{display:inline-block;margin-top:1.5rem;padding:.75rem 1.4rem;border-radius:999px;background:#fff;color:#09090f;font-weight:600;text-decoration:none}
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script>
+    (function () {
+      var d = document.documentElement, l;
+      d.classList.add('js');
+      try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') d.dataset.theme = t; l = localStorage.getItem('lang'); } catch (e) {}
+      if (l !== 'tr' && l !== 'en') l = /^tr\b/i.test(navigator.language || '') ? 'tr' : 'en';
+      d.lang = l;
+      if (l === 'en') { d.classList.add('i18n-pending'); setTimeout(function () { d.classList.remove('i18n-pending'); }, 2000); }
+    })();
+  </script>
 </head>
 <body>
-  <main>
-    <h1>404</h1>
-    <p>Aradığınız sayfa bulunamadı.</p>
-    <a href="/">Ana sayfaya dön</a>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="/" class="brand"><img src="/assets/images/logo.svg" alt="" width="30" height="30">Boznivo</a>
+      <div class="nav__actions">
+        <button type="button" class="lang-btn" data-lang-toggle><span data-l="tr">TR</span><i>/</i><span data-l="en">EN</span></button>
+        <button type="button" class="icon-btn" data-theme-toggle aria-label="Temayı değiştir"></button>
+      </div>
+    </div>
+  </header>
+  <main class="container notfound">
+    <div>
+      <div class="notfound__code text-grad">404</div>
+      <p data-i18n="nf.text">Aradığınız sayfa bulunamadı ya da taşınmış olabilir.</p>
+      <a href="/" class="btn btn--primary" data-i18n="nf.cta">Ana sayfaya dön</a>
+    </div>
   </main>
+  <script src="/assets/js/i18n.js" defer></script>
+  <script src="/assets/js/common.js" defer></script>
 </body>
 </html>

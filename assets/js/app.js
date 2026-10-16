@@ -2,95 +2,135 @@
 (() => {
   'use strict';
 
-  const { esc, asset, detailHref, privacyHref, storeButton, statusBadge, loadApps } = window.Boznivo;
-  const main = document.getElementById('appDetail');
+  const B = window.Boznivo;
+  const { esc, asset, accentOf, detailHref, privacyHref, icons, storeButton, statusBadge, phoneScreen, loadApps, reveal, t, tx, txList } = B;
+  const mount = document.getElementById('appDetail');
+  const id = new URLSearchParams(location.search).get('id');
 
   const setMeta = (sel, value) => document.querySelector(sel)?.setAttribute('content', value);
 
   function notFound() {
-    document.title = 'Uygulama bulunamadı — Boznivo';
-    main.innerHTML = `
-      <div class="py-20 text-center">
-        <h1 class="font-display text-3xl font-bold text-white">Uygulama bulunamadı</h1>
-        <p class="mt-3 text-zinc-400">Aradığınız uygulama kaldırılmış veya bağlantı hatalı olabilir.</p>
-        <a href="/#apps" class="btn-primary mt-8">Tüm uygulamalar</a>
-      </div>`;
+    document.title = `${t('notFoundTitle')} — Boznivo`;
+    mount.innerHTML = `
+      <section class="notfound">
+        <div>
+          <div class="notfound__code text-grad">404</div>
+          <h1 class="section-title">${t('notFoundTitle')}</h1>
+          <p>${t('notFoundText')}</p>
+          <a href="/#apps" class="btn btn--primary">${t('allApps')} ${icons.arrow}</a>
+        </div>
+      </section>`;
   }
 
   function render(app, apps) {
-    const accent = app.accent || '#8b5cf6';
-    document.title = `${app.name} — ${app.tagline || 'Boznivo'}`;
-    setMeta('meta[name="description"]', app.description || app.tagline || '');
-    setMeta('meta[property="og:title"]', `${app.name} — Boznivo`);
-    setMeta('meta[property="og:description"]', app.tagline || '');
-    document.getElementById('appGlow').style.background = accent;
+    const accent = accentOf(app);
+    const tagline = tx(app.tagline);
+    const description = tx(app.description);
+    const category = tx(app.category);
+    const platforms = (app.platforms || []).join(', ');
 
-    const features = (app.features || [])
-      .map((f) => `
-        <li class="card flex gap-3 p-4">
-          <span class="grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-bold text-white" style="background:${esc(accent)}">✓</span>
-          <span class="text-sm leading-relaxed text-zinc-300">${esc(f)}</span>
-        </li>`)
+    document.title = `${app.name} — ${tagline || 'Boznivo'}`;
+    setMeta('meta[name="description"]', description || tagline);
+    setMeta('meta[property="og:title"]', `${app.name} — Boznivo`);
+    setMeta('meta[property="og:description"]', tagline);
+    document.body.style.setProperty('--accent', accent);
+
+    const features = txList(app.features)
+      .map((f, i) => `<li class="feature reveal" style="--d:${i * 60}ms"><span class="feature__check">${icons.check}</span><p>${esc(f)}</p></li>`)
       .join('');
 
     const shots = (app.screenshots || [])
-      .map((src) => `<img src="${esc(asset(src))}" alt="${esc(app.name)} ekran görüntüsü" loading="lazy" class="h-[420px] w-auto shrink-0 snap-start rounded-3xl border border-white/10">`)
+      .map((src, i) => `<img src="${esc(asset(src))}" alt="${esc(t('shotAlt', { name: app.name }))} ${i + 1}" loading="lazy">`)
       .join('');
 
     const others = apps.filter((a) => a.id !== app.id)
       .map((a) => `
-        <a href="${esc(detailHref(a))}" class="app-tile w-24 shrink-0" style="--accent:${esc(a.accent || '#8b5cf6')}">
-          <img src="${esc(asset(a.icon))}" alt="" width="96" height="96" loading="lazy" class="tile-icon">
-          <span class="mt-3 block truncate text-sm font-medium text-white">${esc(a.name)}</span>
+        <a href="${esc(detailHref(a))}" class="app-tile" style="--accent:${accentOf(a)}">
+          ${statusBadge(a)}
+          <img class="app-tile__icon" src="${esc(asset(a.icon))}" alt="" width="232" height="232" loading="lazy">
+          <span class="app-tile__name">${esc(a.name)}</span>
+          <span class="app-tile__meta">${esc(tx(a.category) || tx(a.tagline))}</span>
+          <span class="app-tile__go">${t('view')} ${icons.arrow}</span>
         </a>`)
       .join('');
 
-    main.innerHTML = `
-      <section class="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8" style="--accent:${esc(accent)}">
-        <img src="${esc(asset(app.icon))}" alt="${esc(app.name)} simgesi" width="128" height="128" class="tile-icon h-28 w-28 sm:h-32 sm:w-32">
-        <div class="min-w-0 flex-1">
-          <div class="flex flex-wrap items-center gap-3">
-            <h1 class="font-display text-4xl font-extrabold text-white sm:text-5xl">${esc(app.name)}</h1>
-            ${statusBadge(app)}
-          </div>
-          <p class="mt-2 text-lg text-zinc-300">${esc(app.tagline)}</p>
-          <p class="mt-1 text-sm text-zinc-500">${esc([app.category, (app.platforms || []).join(', ')].filter(Boolean).join(' · '))}</p>
-          <div class="mt-6 flex flex-wrap items-center gap-4">
-            ${storeButton(app, 'text-base px-5 py-3')}
-            <a href="${esc(privacyHref(app))}" class="text-sm text-zinc-400 underline-offset-4 hover:text-white hover:underline">Gizlilik Politikası</a>
+    const infoRow = (label, value) => (value ? `<div class="label-card__row"><span>${label}</span><strong>${value}</strong></div>` : '');
+
+    mount.innerHTML = `
+      <section class="detail-hero" style="--accent:${accent}">
+        <div class="container">
+          <a href="/#apps" class="back-link">${icons.arrowLeft}${t('allApps')}</a>
+          <div class="detail-hero__grid">
+            <div>
+              <img class="detail-hero__icon reveal" src="${esc(asset(app.icon))}" alt="${esc(t('iconAlt', { name: app.name }))}" width="116" height="116">
+              <h1 class="detail-hero__title reveal" style="--d:60ms">${esc(app.name)}</h1>
+              <p class="detail-hero__tagline reveal" style="--d:120ms">${esc(tagline)}</p>
+              <div class="detail-hero__meta reveal" style="--d:180ms">
+                ${statusBadge(app, 'status--inline')}
+                ${category ? `<span class="tag">${esc(category)}</span>` : ''}
+                ${(app.platforms || []).map((p) => `<span class="tag">${esc(p)}</span>`).join('')}
+              </div>
+              <div class="detail-hero__actions reveal" style="--d:240ms">
+                ${storeButton(app)}
+                <a href="${esc(privacyHref(app))}" class="link-arrow">${t('privacyPolicy')} ${icons.arrow}</a>
+              </div>
+            </div>
+            <div class="stage reveal" style="--d:160ms;--accent:${accent}" role="img" aria-label="${esc(app.name)}">
+              <div class="stage__glow" aria-hidden="true"></div>
+              <div class="phone" style="--accent:${accent}">${phoneScreen(app)}</div>
+            </div>
           </div>
         </div>
       </section>
 
-      ${app.description ? `
-      <section class="mt-14 max-w-3xl">
-        <h2 class="text-xs font-semibold uppercase tracking-widest text-zinc-500">Hakkında</h2>
-        <p class="mt-3 text-lg leading-relaxed text-zinc-300">${esc(app.description)}</p>
-      </section>` : ''}
+      <section class="section section--tight-top">
+        <div class="container detail-body">
+          <div>
+            ${description ? `
+              <h2 class="subhead reveal">${t('about')}</h2>
+              <p class="detail-desc reveal" style="margin-top:14px">${esc(description)}</p>` : ''}
+            ${shots ? `
+              <h2 class="subhead reveal" style="margin-top:56px">${t('screenshots')}</h2>
+              <div class="shots">${shots}</div>` : ''}
+            ${features ? `
+              <h2 class="subhead reveal" style="margin-top:56px">${t('features')}</h2>
+              <ul class="features-grid">${features}</ul>` : ''}
+          </div>
 
-      ${shots ? `
-      <section class="mt-14">
-        <h2 class="text-xs font-semibold uppercase tracking-widest text-zinc-500">Ekran Görüntüleri</h2>
-        <div class="-mx-4 mt-4 flex snap-x gap-4 overflow-x-auto px-4 pb-4 sm:mx-0 sm:px-0">${shots}</div>
-      </section>` : ''}
-
-      ${features ? `
-      <section class="mt-14">
-        <h2 class="text-xs font-semibold uppercase tracking-widest text-zinc-500">Öne Çıkan Özellikler</h2>
-        <ul class="mt-4 grid gap-3 sm:grid-cols-2">${features}</ul>
-      </section>` : ''}
+          <aside class="aside-card reveal">
+            <div class="label-card">
+              <div class="label-card__head">${t('details')}</div>
+              ${infoRow(t('developer'), 'Boznivo')}
+              ${infoRow(t('category'), esc(category))}
+              ${infoRow(t('platforms'), esc(platforms))}
+              ${infoRow(t('status'), app.status === 'live' ? t('live') : t('soon'))}
+            </div>
+            <div class="label-card" style="margin-top:14px">
+              <div class="label-card__head">${icons.shield}${t('privacy')}</div>
+              <div class="label-card__row" style="display:block">
+                <p>${t('privacyNote')}</p>
+                <a href="${esc(privacyHref(app))}" class="link-arrow" style="margin-top:10px">${t('privacyPolicy')} ${icons.arrow}</a>
+              </div>
+            </div>
+            <a href="mailto:support@boznivo.com?subject=${encodeURIComponent(app.name)}" class="btn btn--ghost" style="margin-top:14px;width:100%">${icons.mail}${t('support')}</a>
+          </aside>
+        </div>
+      </section>
 
       ${others ? `
-      <section class="mt-20 border-t border-white/5 pt-10">
-        <h2 class="text-xs font-semibold uppercase tracking-widest text-zinc-500">Diğer Uygulamalar</h2>
-        <div class="mt-6 flex gap-6 overflow-x-auto pb-2">${others}</div>
-      </section>` : ''}`;
+        <section class="section section--tight-top">
+          <div class="container">
+            <h2 class="subhead">${t('moreApps')}</h2>
+            <div class="more-apps" style="margin-top:18px">${others}</div>
+          </div>
+        </section>` : ''}`;
+
+    if (render.done) mount.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-in'));
+    reveal(mount);
+    render.done = true;
   }
 
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  (async () => {
-    const id = new URLSearchParams(location.search).get('id');
+  async function load() {
     try {
       const apps = await loadApps();
       const app = apps.find((a) => a.id === id);
@@ -99,5 +139,8 @@
       console.error('apps.json yüklenemedi:', err);
       notFound();
     }
-  })();
+  }
+
+  load();
+  document.addEventListener('langchange', load);
 })();

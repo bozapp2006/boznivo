@@ -1,20 +1,27 @@
 # boznivo.com
 
-Boznivo için statik portföy ve uygulama tanıtım sitesi. Build adımı yok — Cloudflare Pages dosyaları doğrudan yayınlar.
+Boznivo için statik portföy ve uygulama tanıtım sitesi. Build adımı yok, framework yok — Cloudflare Pages dosyaları doğrudan yayınlar.
+
+- Açık / koyu tema (sistem ayarını izler, elle değiştirilebilir)
+- Türkçe / İngilizce dil seçeneği (tarayıcı diline göre başlar, seçim hatırlanır)
+- Uygulamalar `apps.json`'dan otomatik listelenir
 
 ## Yapı
 
 ```
-index.html          Ana sayfa (Hero, uygulama ikon ızgarası, Hakkımda, İletişim)
+index.html          Ana sayfa (hero, uygulamalar, ilkeler, hakkımda, SSS, iletişim)
 app.html            Uygulama detay sayfası (/app.html?id=<id>)
-privacy.html        Gizlilik politikası (?app=<id> ile uygulamaya özel)
+privacy.html        Gizlilik politikası (?app=<id> ile uygulamaya özel, &lang=en ile İngilizce)
 apps.json           Uygulama verileri — yeni uygulama burada eklenir
 404.html            Bulunamayan sayfa
 _headers            Cloudflare Pages güvenlik/önbellek başlıkları
 robots.txt, sitemap.xml
 assets/
-  css/style.css
-  js/common.js, js/main.js, js/app.js, js/tailwind.config.js
+  css/style.css     Tüm tasarım (renkler en üstte :root değişkenlerinde)
+  js/i18n.js        İngilizce çeviriler
+  js/common.js      Ortak: dil, tema, menü, veri
+  js/main.js        Ana sayfa
+  js/app.js         Detay sayfası
   images/           logo.svg, og-image.png, apple-touch-icon.png, apps/
 ```
 
@@ -27,24 +34,37 @@ assets/
 {
   "id": "yeniapp",
   "name": "Yeni App",
-  "tagline": "Tek satırlık slogan.",
-  "description": "Kısa açıklama.",
+  "featured": false,
+  "tagline": { "tr": "Tek satırlık slogan.", "en": "One-line tagline." },
+  "description": { "tr": "Kısa açıklama.", "en": "Short description." },
   "icon": "assets/images/apps/yeniapp.png",
-  "category": "Yardımcı Araçlar",
+  "category": { "tr": "Yardımcı Araçlar", "en": "Utilities" },
   "platforms": ["iPhone"],
   "status": "live",
   "accent": "#3b82f6",
   "appStoreUrl": "https://apps.apple.com/app/id1234567890",
   "privacyUrl": "",
-  "features": ["Özellik 1", "Özellik 2", "Özellik 3"],
+  "features": {
+    "tr": ["Özellik 1", "Özellik 2", "Özellik 3"],
+    "en": ["Feature 1", "Feature 2", "Feature 3"]
+  },
   "screenshots": ["assets/images/apps/yeniapp-1.png"]
 }
 ```
 
-- Ana sayfada ikon olarak listelenir; tıklayınca `/app.html?id=<id>` detay sayfası açılır.
-- `screenshots` isteğe bağlıdır; doluysa detay sayfasında kaydırılabilir galeri olarak gösterilir.
-- `status`: `live` (App Store butonu aktif) veya `soon` ("Çok Yakında").
+- Metin alanları düz metin de olabilir (`"tagline": "Slogan"`); o zaman iki dilde de aynı görünür.
+- `status`: `live` (App Store butonu aktif) veya `soon` ("Çok yakında").
+- `featured: true` olan uygulama ana sayfadaki telefon maketinde gösterilir (yoksa ilk yayındaki).
+- `accent`: kartın ve telefon ekranının rengi.
+- `screenshots` isteğe bağlıdır; ilki telefon maketinde, hepsi detay sayfasındaki galeride görünür.
 - `privacyUrl` boşsa otomatik `/privacy.html?app=<id>` kullanılır — App Store Connect'te bu adresi girebilirsiniz.
+- `sitemap.xml` dosyasına `/app.html?id=<id>` adresini de ekleyin.
+
+## Metinleri düzenleme
+
+- Türkçe metinler doğrudan HTML dosyalarındadır.
+- İngilizce karşılıkları `assets/js/i18n.js` içinde, HTML'deki `data-i18n="..."` anahtarıyla eşleşir.
+  Bir metni değiştirirseniz iki dili de güncelleyin.
 
 ## Yerelde çalıştırma
 
@@ -59,8 +79,3 @@ python3 -m http.server 8080
 - Framework preset: **None**
 - Build command: *(boş)*
 - Build output directory: `/`
-
-Yeni uygulama eklediğinizde `sitemap.xml` dosyasına `/app.html?id=<id>` adresini de ekleyin.
-# boznivo
-# boznivo
-# boznivo

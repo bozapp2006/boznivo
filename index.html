@@ -1,23 +1,25 @@
 <!doctype html>
-<html lang="tr" class="scroll-smooth">
+<html lang="tr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Boznivo — Özenle tasarlanmış iOS uygulamaları</title>
-  <meta name="description" content="Boznivo, sade, hızlı ve gizliliğe saygılı iOS uygulamaları geliştiren bağımsız bir mobil uygulama stüdyosudur.">
-  <meta name="theme-color" content="#09090f">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title data-i18n="home.title">Boznivo — Özenle tasarlanmış iOS uygulamaları</title>
+  <meta name="description" data-i18n-attr="content:home.desc" content="Boznivo; sade, hızlı ve gizliliğinize saygı duyan iOS uygulamaları tasarlayan ve geliştiren bağımsız bir mobil uygulama stüdyosudur.">
   <link rel="canonical" href="https://boznivo.com/">
+  <meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Boznivo">
   <meta property="og:title" content="Boznivo — Özenle tasarlanmış iOS uygulamaları">
-  <meta property="og:description" content="Sade, hızlı ve gizliliğe saygılı iOS uygulamaları.">
+  <meta property="og:description" content="Sade, hızlı ve gizliliğe saygılı iOS uygulamaları. Simple, fast, privacy-respecting iOS apps.">
   <meta property="og:url" content="https://boznivo.com/">
   <meta property="og:image" content="https://boznivo.com/assets/images/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="tr_TR">
+  <meta property="og:locale:alternate" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Boznivo — Özenle tasarlanmış iOS uygulamaları">
   <meta name="twitter:description" content="Sade, hızlı ve gizliliğe saygılı iOS uygulamaları.">
@@ -26,14 +28,21 @@
   <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <link rel="preload" href="/apps.json" as="fetch" crossorigin>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-
-  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-  <script src="/assets/js/tailwind.config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
+  <!-- Tema ve dil: kayıtlı seçimi ilk boyamadan önce uygula -->
+  <script>
+    (function () {
+      var d = document.documentElement, l;
+      d.classList.add('js');
+      try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') d.dataset.theme = t; l = localStorage.getItem('lang'); } catch (e) {}
+      if (l !== 'tr' && l !== 'en') l = /^tr\b/i.test(navigator.language || '') ? 'tr' : 'en';
+      d.lang = l;
+      if (l === 'en') { d.classList.add('i18n-pending'); setTimeout(function () { d.classList.remove('i18n-pending'); }, 2000); }
+    })();
+  </script>
 
   <script type="application/ld+json">
   {
@@ -46,156 +55,292 @@
   }
   </script>
 </head>
-<body class="bg-ink text-zinc-300 font-sans antialiased selection:bg-violet-500/40 selection:text-white">
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">İçeriğe geç</a>
 
-  <!-- Arka plan ışıltıları -->
-  <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-    <div class="glow glow-1"></div>
-    <div class="glow glow-2"></div>
-    <div class="absolute inset-0 bg-grid"></div>
-  </div>
-
-  <!-- Navigasyon -->
-  <header id="nav" class="fixed inset-x-0 top-0 z-40 transition-all duration-300">
-    <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-      <a href="#top" class="flex items-center gap-2.5 font-display text-lg font-bold text-white">
-        <img src="/assets/images/logo.svg" alt="" width="32" height="32" class="h-8 w-8">
+  <!-- ============ Navigasyon ============ -->
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="/" class="brand" aria-label="Boznivo ana sayfa" data-i18n-attr="aria-label:nav.home">
+        <img src="/assets/images/logo.svg" alt="" width="30" height="30">
         Boznivo
       </a>
-      <div class="hidden items-center gap-8 text-sm font-medium md:flex">
-        <a href="#apps" class="nav-link">Uygulamalar</a>
-        <a href="#about" class="nav-link">Hakkımda</a>
-        <a href="#contact" class="nav-link">İletişim</a>
-        <a href="mailto:support@boznivo.com" class="rounded-full bg-white px-4 py-2 text-ink transition hover:bg-zinc-200">Destek</a>
+      <nav class="nav__links" aria-label="Ana menü" data-i18n-attr="aria-label:nav.menu">
+        <a href="#apps" data-i18n="nav.apps">Uygulamalar</a>
+        <a href="#principles" data-i18n="nav.principles">İlkeler</a>
+        <a href="#about" data-i18n="nav.about">Hakkımda</a>
+        <a href="#faq" data-i18n="nav.faq">SSS</a>
+      </nav>
+      <div class="nav__actions">
+        <button type="button" class="lang-btn" data-lang-toggle><span data-l="tr">TR</span><i>/</i><span data-l="en">EN</span></button>
+        <button type="button" class="icon-btn" data-theme-toggle aria-label="Temayı değiştir"></button>
+        <a href="#contact" class="btn btn--primary btn--sm nav__cta" data-i18n="nav.cta">İletişime geç</a>
+        <button type="button" class="icon-btn nav__menu-btn" data-menu-toggle aria-label="Menüyü aç" aria-expanded="false" aria-controls="mobileMenu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
+        </button>
       </div>
-      <button id="menuBtn" class="rounded-lg p-2 text-white md:hidden" aria-label="Menüyü aç" aria-expanded="false" aria-controls="mobileMenu">
-        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
-      </button>
-    </nav>
-    <div id="mobileMenu" class="hidden border-t border-white/5 bg-ink/95 px-4 pb-4 backdrop-blur md:hidden">
-      <a href="#apps" class="block py-3 text-white">Uygulamalar</a>
-      <a href="#about" class="block py-3 text-white">Hakkımda</a>
-      <a href="#contact" class="block py-3 text-white">İletişim</a>
     </div>
+    <nav id="mobileMenu" class="mobile-menu" aria-label="Mobil menü">
+      <a href="#apps" data-i18n="nav.apps">Uygulamalar</a>
+      <a href="#principles" data-i18n="nav.principles">İlkeler</a>
+      <a href="#about" data-i18n="nav.about">Hakkımda</a>
+      <a href="#faq" data-i18n="nav.faq">SSS</a>
+      <a href="#contact" data-i18n="nav.contact">İletişim</a>
+    </nav>
   </header>
 
-  <main id="top">
-    <!-- Hero -->
-    <section class="relative px-4 pb-24 pt-36 sm:px-6 sm:pt-44">
-      <div class="mx-auto max-w-4xl text-center">
-        <span class="reveal inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium text-zinc-300 backdrop-blur">
-          <span class="relative flex h-2 w-2"><span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span></span>
-          Bağımsız iOS geliştirici stüdyosu
-        </span>
-        <h1 class="reveal mt-8 font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-7xl">
-          Küçük uygulamalar,<br>
-          <span class="text-gradient">büyük fark.</span>
-        </h1>
-        <p class="reveal mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400 sm:text-xl">
-          Boznivo; sade, hızlı ve gizliliğinize saygı duyan iOS uygulamaları tasarlar ve geliştirir. Her detay, günlük hayatınızı biraz daha kolaylaştırmak için.
-        </p>
-        <div class="reveal mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a href="#apps" class="btn-primary">
-            Uygulamaları Keşfet
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-          </a>
-          <a href="#contact" class="btn-ghost">İletişime Geç</a>
+  <main id="main">
+    <!-- ============ Hero ============ -->
+    <section class="hero">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="container hero__grid">
+        <div>
+          <span class="eyebrow reveal"><span class="pulse" aria-hidden="true"></span><span data-i18n="hero.eyebrow">Bağımsız iOS uygulama stüdyosu</span></span>
+          <h1 class="hero__title reveal" style="--d:80ms" data-i18n="hero.title">Küçük uygulamalar,<br><span class="serif text-grad">büyük</span> fark.</h1>
+          <p class="hero__lead reveal" style="--d:160ms" data-i18n="hero.lead">Boznivo; sade, hızlı ve gizliliğinize saygı duyan iOS uygulamaları tasarlar ve geliştirir. Her detay, günlük hayatınızı biraz daha kolaylaştırmak için düşünüldü.</p>
+          <div class="hero__actions reveal" style="--d:240ms">
+            <a href="#apps" class="btn btn--primary"><span data-i18n="hero.cta1">Uygulamaları keşfet</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <a href="#about" class="btn btn--ghost" data-i18n="hero.cta2">Hikâyemi oku</a>
+          </div>
+          <dl class="stats reveal" style="--d:320ms">
+            <div><dt data-i18n="stats.apps">Uygulama</dt><dd id="statApps">—</dd></div>
+            <div><dt data-i18n="stats.platform">Platform</dt><dd>iOS</dd></div>
+            <div><dt data-i18n="stats.tracking">Takip &amp; reklam</dt><dd data-i18n="stats.none">Yok</dd></div>
+          </dl>
         </div>
 
-        <dl class="reveal mx-auto mt-16 grid max-w-xl grid-cols-3 gap-4 border-t border-white/5 pt-8">
-          <div><dt class="text-xs uppercase tracking-wider text-zinc-500">Platform</dt><dd class="mt-1 font-display text-lg font-semibold text-white">iOS</dd></div>
-          <div><dt class="text-xs uppercase tracking-wider text-zinc-500">Uygulama</dt><dd id="statApps" class="mt-1 font-display text-lg font-semibold text-white">—</dd></div>
-          <div><dt class="text-xs uppercase tracking-wider text-zinc-500">Takip</dt><dd class="mt-1 font-display text-lg font-semibold text-white">Sıfır</dd></div>
-        </dl>
+        <div class="stage reveal" id="heroStage" style="--d:200ms" role="img" aria-label="Öne çıkan uygulama" data-i18n-attr="aria-label:hero.stage">
+          <div class="stage__glow" aria-hidden="true"></div>
+          <div class="phone" id="heroPhone">
+            <div class="skeleton"></div>
+          </div>
+          <div class="chip chip--a" aria-hidden="true">
+            <span class="chip__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <span><strong data-i18n="chip.a.t">Veri toplanmaz</strong><span data-i18n="chip.a.s">Gizlilik varsayılan</span></span>
+          </div>
+          <div class="chip chip--b" aria-hidden="true">
+            <span class="chip__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+            <span><strong data-i18n="chip.b.t">%100 Swift</strong><span data-i18n="chip.b.s">Native ve akıcı</span></span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Uygulamalar -->
-    <section id="apps" class="scroll-mt-20 px-4 py-24 sm:px-6">
-      <div class="mx-auto max-w-6xl">
-        <div class="reveal mb-12 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+    <!-- ============ Kayan şerit ============ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <div class="marquee__group">
+          <span class="marquee__item">SwiftUI</span>
+          <span class="marquee__item">WidgetKit</span>
+          <span class="marquee__item" data-i18n="mq.icloud">iCloud senkronizasyon</span>
+          <span class="marquee__item">Face ID</span>
+          <span class="marquee__item" data-i18n="mq.dark">Karanlık mod</span>
+          <span class="marquee__item" data-i18n="mq.a11y">Erişilebilirlik</span>
+          <span class="marquee__item" data-i18n="mq.noads">Reklamsız</span>
+          <span class="marquee__item" data-i18n="mq.notrack">Takip yok</span>
+          <span class="marquee__item">iPhone &amp; iPad</span>
+        </div>
+        <div class="marquee__group">
+          <span class="marquee__item">SwiftUI</span>
+          <span class="marquee__item">WidgetKit</span>
+          <span class="marquee__item" data-i18n="mq.icloud">iCloud senkronizasyon</span>
+          <span class="marquee__item">Face ID</span>
+          <span class="marquee__item" data-i18n="mq.dark">Karanlık mod</span>
+          <span class="marquee__item" data-i18n="mq.a11y">Erişilebilirlik</span>
+          <span class="marquee__item" data-i18n="mq.noads">Reklamsız</span>
+          <span class="marquee__item" data-i18n="mq.notrack">Takip yok</span>
+          <span class="marquee__item">iPhone &amp; iPad</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ Uygulamalar ============ -->
+    <section id="apps" class="section">
+      <div class="container">
+        <div class="section-head section-head--split reveal">
           <div>
-            <p class="text-sm font-semibold uppercase tracking-widest text-violet-400">Portföy</p>
-            <h2 class="mt-2 font-display text-3xl font-bold text-white sm:text-4xl">Uygulamalarım</h2>
+            <span class="kicker" data-i18n="apps.kicker">Portföy</span>
+            <h2 class="section-title" data-i18n="apps.title">Uygulamalarım</h2>
           </div>
-          <p class="max-w-md text-zinc-400">Her biri tek bir işi en iyi şekilde yapmak için tasarlandı. Reklamsız, sade ve hızlı.</p>
+          <p class="section-lead" data-i18n="apps.lead">Her biri tek bir işi en iyi şekilde yapmak için tasarlandı. İncelemek için bir uygulamaya dokunun.</p>
         </div>
-
         <div id="appsGrid" class="apps-grid" aria-live="polite">
-          <!-- apps.json'dan doldurulur; yüklenirken iskelet ikonlar -->
-          <div class="skeleton tile-icon bg-white/5"></div>
-          <div class="skeleton tile-icon bg-white/5"></div>
-          <div class="skeleton tile-icon bg-white/5"></div>
+          <div class="skeleton tile-skeleton"></div>
+          <div class="skeleton tile-skeleton"></div>
+          <div class="skeleton tile-skeleton"></div>
         </div>
       </div>
     </section>
 
-    <!-- Hakkımda -->
-    <section id="about" class="scroll-mt-20 px-4 py-24 sm:px-6">
-      <div class="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
-        <div class="reveal">
-          <p class="text-sm font-semibold uppercase tracking-widest text-violet-400">Hakkımda</p>
-          <h2 class="mt-2 font-display text-3xl font-bold text-white sm:text-4xl">Daha az özellik,<br>daha çok özen.</h2>
-          <p class="mt-6 leading-relaxed text-zinc-400">
-            Ben Boznivo'nun arkasındaki bağımsız mobil geliştiriciyim. Swift ve SwiftUI ile, Apple'ın tasarım ilkelerine sadık kalarak; gereksiz karmaşadan arınmış, hızlı açılan ve verilerinizi yalnızca sizin cihazınızda tutan uygulamalar geliştiriyorum.
-          </p>
-          <p class="mt-4 leading-relaxed text-zinc-400">
-            Vizyonum basit: Kullanıcıyı ürüne değil, ürünü kullanıcıya hizmet ettiren yazılımlar üretmek.
-          </p>
+    <!-- ============ İlkeler ============ -->
+    <section id="principles" class="section section--tight-top">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="kicker" data-i18n="pr.kicker">İlkeler</span>
+          <h2 class="section-title" data-i18n="pr.title">Az ama <span class="serif">öz.</span></h2>
         </div>
-        <div class="reveal grid gap-4 sm:grid-cols-2">
-          <div class="card p-6">
-            <div class="icon-chip">⚡️</div>
-            <h3 class="mt-4 font-semibold text-white">Performans</h3>
-            <p class="mt-2 text-sm text-zinc-400">Native Swift, anında açılış ve akıcı animasyonlar.</p>
-          </div>
-          <div class="card p-6">
-            <div class="icon-chip">🔒</div>
-            <h3 class="mt-4 font-semibold text-white">Gizlilik</h3>
-            <p class="mt-2 text-sm text-zinc-400">Takip yok, gereksiz izin yok, veriler cihazda.</p>
-          </div>
-          <div class="card p-6">
-            <div class="icon-chip">✨</div>
-            <h3 class="mt-4 font-semibold text-white">Tasarım</h3>
-            <p class="mt-2 text-sm text-zinc-400">Apple İnsan Arayüzü Yönergeleri ile uyumlu, sade arayüz.</p>
-          </div>
-          <div class="card p-6">
-            <div class="icon-chip">🛠️</div>
-            <h3 class="mt-4 font-semibold text-white">Destek</h3>
-            <p class="mt-2 text-sm text-zinc-400">Düzenli güncellemeler ve hızlı geri dönüş.</p>
-          </div>
+
+        <div class="bento">
+          <article class="bento__item bento__item--tall reveal">
+            <div class="bento__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <h3 class="bento__title" data-i18n="pr.privacy.t">Gizlilik varsayılan ayardır</h3>
+            <p class="bento__text" data-i18n="pr.privacy.d">Verileriniz size aittir. Uygulamalarım sizi izlemez, profil çıkarmaz ve verilerinizi kimseyle paylaşmaz.</p>
+            <div class="bento__visual">
+              <div class="label-card">
+                <div class="label-card__head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span data-i18n="label.title">Gizlilik etiketi</span></div>
+                <div class="label-card__row"><span data-i18n="label.track">Kullanıcı takibi</span> <span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="ok.none">Yok</span></span></div>
+                <div class="label-card__row"><span data-i18n="label.ads">Reklam SDK'sı</span> <span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="ok.none">Yok</span></span></div>
+                <div class="label-card__row"><span data-i18n="label.account">Zorunlu hesap</span> <span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="ok.none">Yok</span></span></div>
+                <div class="label-card__row"><span data-i18n="label.data">Veriler</span> <span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="ok.device">Cihazda</span></span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="bento__item bento__item--wide reveal" style="--d:80ms">
+            <div class="bento__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+            <h3 class="bento__title" data-i18n="pr.native.t">Native, hızlı ve hafif</h3>
+            <p class="bento__text" data-i18n="pr.native.d">Swift ve SwiftUI ile yazılır; anında açılır, pili yormaz ve iOS'un sunduğu her şeyle doğal şekilde bütünleşir.</p>
+            <div class="bento__visual">
+              <div class="code-card" aria-hidden="true">
+                <div class="code-card__bar"><span></span><span></span><span></span></div>
+<pre><span class="tok-k">struct</span> <span class="tok-t">BoznivoApp</span>: <span class="tok-t">App</span> {
+  <span class="tok-k">var</span> body: <span class="tok-k">some</span> <span class="tok-t">Scene</span> {
+    <span class="tok-t">WindowGroup</span> {
+      <span class="tok-f">ContentView</span>()  <span class="tok-c">// simple, fast, crafted</span>
+    }
+  }
+}</pre>
+              </div>
+            </div>
+          </article>
+
+          <article class="bento__item reveal" style="--d:120ms">
+            <div class="bento__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 17l.8 2.2L22 20l-2.2.8L19 23l-.8-2.2L16 20l2.2-.8z"/></svg></div>
+            <h3 class="bento__title" data-i18n="pr.design.t">Sade tasarım</h3>
+            <p class="bento__text" data-i18n="pr.design.d">Apple İnsan Arayüzü Yönergeleri'ne sadık, öğrenmesi gerekmeyen arayüzler.</p>
+          </article>
+
+          <article class="bento__item reveal" style="--d:160ms">
+            <div class="bento__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg></div>
+            <h3 class="bento__title" data-i18n="pr.devices.t">Her ekranda</h3>
+            <p class="bento__text" data-i18n="pr.devices.d">iPhone ve iPad'de, widget'larda ve kilit ekranında tutarlı deneyim.</p>
+            <div class="bento__visual tags">
+              <span class="tag">iPhone</span><span class="tag">iPad</span><span class="tag">Widget</span><span class="tag">iCloud</span>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- İletişim -->
-    <section id="contact" class="scroll-mt-20 px-4 py-24 sm:px-6">
-      <div class="reveal card relative mx-auto max-w-4xl overflow-hidden p-10 text-center sm:p-16">
-        <div aria-hidden="true" class="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-500/20 via-fuchsia-500/10 to-transparent"></div>
-        <h2 class="font-display text-3xl font-bold text-white sm:text-4xl">Bir sorunuz mu var?</h2>
-        <p class="mx-auto mt-4 max-w-xl text-zinc-400">Destek, geri bildirim veya iş birliği için bana her zaman e-posta ile ulaşabilirsiniz. Genellikle 48 saat içinde yanıt veririm.</p>
-        <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a href="mailto:support@boznivo.com" class="btn-primary">support@boznivo.com</a>
-          <button type="button" id="copyEmail" class="btn-ghost" data-email="support@boznivo.com">E-postayı Kopyala</button>
+    <!-- ============ Hakkımda ============ -->
+    <section id="about" class="section section--tight-top">
+      <div class="container about">
+        <div class="about__text reveal">
+          <span class="kicker" data-i18n="about.kicker">Hakkımda</span>
+          <h2 class="section-title" data-i18n="about.title">Daha az özellik,<br>daha çok <span class="serif text-grad">özen.</span></h2>
+          <p data-i18n="about.p1">Ben Boznivo'nun arkasındaki bağımsız mobil geliştiriciyim. Swift ve SwiftUI ile, Apple'ın tasarım ilkelerine sadık kalarak; gereksiz karmaşadan arınmış, hızlı açılan ve verilerinizi yalnızca sizin cihazınızda tutan uygulamalar geliştiriyorum.</p>
+          <p data-i18n="about.p2">Büyük ekipler yerine küçük ve odaklı çalışmayı seçiyorum. Bu sayede her geri bildirimi okuyor, her detayı kendim cilalıyorum.</p>
+          <blockquote class="quote" data-i18n="about.quote">“Kullanıcıyı ürüne değil, ürünü kullanıcıya hizmet ettiren yazılımlar.”</blockquote>
+        </div>
+
+        <ol class="steps">
+          <li class="step reveal" style="--d:80ms">
+            <span class="step__num text-grad">01</span>
+            <div><h3 data-i18n="s1.t">Dinlerim</h3><p data-i18n="s1.d">Gerçek bir sorunla, onu yaşayan insanların anlattıklarıyla başlarım.</p></div>
+          </li>
+          <li class="step reveal" style="--d:160ms">
+            <span class="step__num text-grad">02</span>
+            <div><h3 data-i18n="s2.t">Sadeleştiririm</h3><p data-i18n="s2.d">Her özelliği “gerçekten gerekli mi?” sorusundan geçiririm. Geriye yalnızca özü kalır.</p></div>
+          </li>
+          <li class="step reveal" style="--d:240ms">
+            <span class="step__num text-grad">03</span>
+            <div><h3 data-i18n="s3.t">Cilalarım</h3><p data-i18n="s3.d">Animasyondan erişilebilirliğe kadar detaylarla uğraşır, yayından sonra geri bildirimlerle geliştiririm.</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ SSS ============ -->
+    <section id="faq" class="section section--tight-top">
+      <div class="container">
+        <div class="section-head section-head--center reveal">
+          <span class="kicker" data-i18n="faq.kicker">SSS</span>
+          <h2 class="section-title" data-i18n="faq.title">Sık sorulan sorular</h2>
+        </div>
+        <div class="faq reveal">
+          <details>
+            <summary data-i18n="faq.q1">Verilerim nerede saklanıyor?</summary>
+            <p data-i18n="faq.a1">Uygulamalarım verilerinizi varsayılan olarak cihazınızda tutar. Senkronizasyon sunan uygulamalarda veriler kendi iCloud hesabınızda saklanır; bu verilere benim erişimim yoktur. Ayrıntılar için <a href="/privacy.html">gizlilik politikasına</a> göz atabilirsiniz.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q2">Uygulamalar ücretli mi?</summary>
+            <p data-i18n="faq.a2">Fiyatlandırma uygulamaya göre değişir ve varsa uygulama içi satın alımlarla birlikte her zaman App Store sayfasında açıkça belirtilir.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q3">Bir hata buldum ya da önerim var. Nasıl iletebilirim?</summary>
+            <p data-i18n="faq.a3"><a href="mailto:support@boznivo.com">support@boznivo.com</a> adresine yazmanız yeterli. Her e-postayı okuyorum ve genellikle 48 saat içinde yanıt veriyorum.</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q4">Android sürümü gelecek mi?</summary>
+            <p data-i18n="faq.a4">Şu an odağım Apple platformlarında en iyi deneyimi sunmak. Yeni platformlar için planlarım olursa burada duyuracağım.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ İletişim ============ -->
+    <section id="contact" class="section section--tight-top">
+      <div class="container">
+        <div class="cta reveal">
+          <h2 class="cta__title" data-i18n="cta.title">Bir fikriniz mi var?<br><span class="serif">Konuşalım.</span></h2>
+          <p class="cta__lead" data-i18n="cta.lead">Destek, geri bildirim veya iş birliği için bana her zaman e-posta ile ulaşabilirsiniz.</p>
+          <div class="cta__actions">
+            <a href="mailto:support@boznivo.com" class="btn btn--primary">support@boznivo.com</a>
+            <button type="button" class="btn btn--ghost" id="copyEmail" data-email="support@boznivo.com" data-i18n="cta.copy">Adresi kopyala</button>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="border-t border-white/5 px-4 py-10 sm:px-6">
-    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-zinc-500 sm:flex-row">
-      <p>© <span id="year">2026</span> Boznivo. Tüm hakları saklıdır.</p>
-      <div class="flex gap-6">
-        <a href="/privacy.html" class="hover:text-white">Gizlilik Politikası</a>
-        <a href="mailto:support@boznivo.com" class="hover:text-white">Destek</a>
+  <!-- ============ Altbilgi ============ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="/" class="brand"><img src="/assets/images/logo.svg" alt="" width="30" height="30">Boznivo</a>
+          <p data-i18n="footer.blurb">Sade, hızlı ve gizliliğe saygılı iOS uygulamaları. Swift ile, özenle.</p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.apps">Uygulamalar</h4>
+          <ul id="footerApps"></ul>
+        </div>
+        <div>
+          <h4 data-i18n="footer.site">Site</h4>
+          <ul>
+            <li><a href="#principles" data-i18n="nav.principles">İlkeler</a></li>
+            <li><a href="#about" data-i18n="nav.about">Hakkımda</a></li>
+            <li><a href="#faq" data-i18n="nav.faq">SSS</a></li>
+            <li><a href="#contact" data-i18n="nav.contact">İletişim</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 data-i18n="footer.legal">Yasal</h4>
+          <ul>
+            <li><a href="/privacy.html" data-i18n="footer.privacy">Gizlilik Politikası</a></li>
+            <li><a href="mailto:support@boznivo.com" data-i18n="footer.support">Destek</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__wordmark" aria-hidden="true">boznivo</div>
+      <div class="footer__bottom">
+        <span>© <span data-year>2026</span> Boznivo. <span data-i18n="footer.rights">Tüm hakları saklıdır.</span></span>
+        <span data-i18n="footer.made">Swift ile özenle geliştirildi.</span>
       </div>
     </div>
   </footer>
 
-  <noscript>
-    <p style="text-align:center;padding:1rem">Uygulama listesini görmek için JavaScript'i etkinleştirin.</p>
-  </noscript>
-
+  <script src="/assets/js/i18n.js" defer></script>
   <script src="/assets/js/common.js" defer></script>
   <script src="/assets/js/main.js" defer></script>
 </body>
