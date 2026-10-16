@@ -1,0 +1,139 @@
+/* Boznivo — Tailwind'e ek özel stiller */
+
+:root {
+  --ink: #09090f;
+  --card: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(255, 255, 255, 0.08);
+}
+
+html { background: var(--ink); }
+body { background: var(--ink); min-height: 100vh; }
+
+/* Arka plan */
+.glow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(120px);
+  opacity: 0.35;
+}
+.glow-1 { width: 42rem; height: 42rem; top: -18rem; left: 50%; transform: translateX(-60%); background: #6366f1; }
+.glow-2 { width: 30rem; height: 30rem; top: 4rem; right: -10rem; background: #d946ef; opacity: 0.2; }
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at top, #000 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at top, #000 20%, transparent 70%);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #a5b4fc, #c084fc 45%, #f472b6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Navigasyon */
+#nav.scrolled {
+  background: rgba(9, 9, 15, 0.75);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.nav-link { color: #a1a1aa; transition: color .2s; }
+.nav-link:hover { color: #fff; }
+
+/* Butonlar */
+.btn-primary, .btn-ghost {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  border-radius: 9999px; padding: .8rem 1.5rem; font-weight: 600; font-size: .95rem;
+  transition: transform .2s, background-color .2s, border-color .2s, box-shadow .2s;
+}
+.btn-primary {
+  background: #fff; color: var(--ink);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.1), 0 10px 40px -10px rgba(168, 85, 247, .6);
+}
+.btn-primary:hover { transform: translateY(-1px); background: #f4f4f5; }
+.btn-ghost { color: #fff; border: 1px solid rgba(255,255,255,.15); background: rgba(255,255,255,.03); }
+.btn-ghost:hover { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.07); }
+
+/* Kartlar */
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 1.5rem;
+  backdrop-filter: blur(8px);
+}
+/* Uygulama ikon ızgarası */
+.apps-grid {
+  display: grid; gap: 2.5rem 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(140px, 40%), 1fr));
+}
+.apps-grid > .skeleton { max-width: 150px; justify-self: center; width: 100%; }
+.app-tile { display: block; width: 100%; max-width: 150px; justify-self: center; text-align: center; outline: none; }
+.tile-icon {
+  width: 100%; height: auto; aspect-ratio: 1; border-radius: 22.5%;
+  box-shadow: 0 12px 32px -10px color-mix(in srgb, var(--accent, #8b5cf6) 70%, transparent);
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s;
+}
+.app-tile:hover .tile-icon, .app-tile:focus-visible .tile-icon {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 22px 48px -12px color-mix(in srgb, var(--accent, #8b5cf6) 85%, transparent);
+}
+.app-tile:focus-visible .tile-icon { outline: 2px solid #c4b5fd; outline-offset: 4px; }
+.tile-badge {
+  position: absolute; top: -.4rem; right: -.4rem; border-radius: 9999px;
+  padding: .2rem .55rem; font-size: .65rem; font-weight: 700;
+  background: #fbbf24; color: #09090f; box-shadow: 0 4px 12px rgba(0,0,0,.4);
+}
+
+.app-icon {
+  width: 72px; height: 72px; border-radius: 22.5%;
+  box-shadow: 0 8px 24px -6px color-mix(in srgb, var(--accent, #8b5cf6) 60%, transparent);
+}
+
+.icon-chip {
+  display: grid; place-items: center; width: 2.75rem; height: 2.75rem;
+  border-radius: .9rem; background: rgba(255,255,255,.06); font-size: 1.25rem;
+}
+
+.badge {
+  display: inline-flex; align-items: center; border-radius: 9999px;
+  padding: .2rem .65rem; font-size: .7rem; font-weight: 600; letter-spacing: .02em;
+}
+
+/* App Store butonu */
+.btn-store {
+  display: inline-flex; align-items: center; gap: .55rem;
+  background: #fff; color: #000; border-radius: .8rem; padding: .55rem 1rem;
+  font-weight: 600; font-size: .85rem; transition: transform .2s, opacity .2s;
+}
+.btn-store:hover { transform: translateY(-1px); }
+.btn-store[aria-disabled="true"] { background: rgba(255,255,255,.08); color: #a1a1aa; cursor: default; transform: none; }
+
+/* İskelet */
+.skeleton { position: relative; overflow: hidden; }
+.skeleton::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.04), transparent);
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+/* Belirme animasyonu */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .skeleton::after { animation: none; }
+}
+
+/* Gizlilik sayfası tipografisi */
+.prose-policy h2 { color: #fff; font-family: Sora, Inter, sans-serif; font-weight: 700; font-size: 1.35rem; margin: 2.5rem 0 .75rem; }
+.prose-policy p, .prose-policy li { color: #a1a1aa; line-height: 1.8; }
+.prose-policy p + p { margin-top: .75rem; }
+.prose-policy ul { list-style: disc; padding-left: 1.25rem; margin-top: .5rem; }
+.prose-policy li + li { margin-top: .35rem; }
+.prose-policy a { color: #c4b5fd; text-decoration: underline; text-underline-offset: 3px; }
+.prose-policy strong { color: #e4e4e7; }

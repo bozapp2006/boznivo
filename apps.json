@@ -1,0 +1,43 @@
+{
+  "_readme": "Yeni bir uygulama eklemek için 'apps' dizisine yeni bir obje ekleyin. Zorunlu alanlar: id, name, tagline, icon. 'status' alanı 'live' (yayında) veya 'soon' (yakında) olabilir. 'privacyUrl' boş bırakılırsa otomatik olarak privacy.html?app=<id> kullanılır. 'screenshots' (isteğe bağlı) ekran görüntüsü yolları dizisidir; detay sayfasında galeri olarak gösterilir.",
+  "apps": [
+    {
+      "id": "focusly",
+      "name": "Focusly",
+      "tagline": "Odaklan, ilerle, tekrarla.",
+      "description": "Pomodoro tekniğiyle çalışma seanslarınızı planlayan, dikkat dağıtıcıları azaltan ve ilerlemenizi sade grafiklerle gösteren minimal bir odak asistanı.",
+      "icon": "assets/images/apps/focusly.svg",
+      "category": "Verimlilik",
+      "platforms": ["iPhone", "iPad"],
+      "status": "live",
+      "accent": "#8b5cf6",
+      "appStoreUrl": "https://apps.apple.com/app/id0000000000",
+      "privacyUrl": "",
+      "features": [
+        "Özelleştirilebilir Pomodoro zamanlayıcı",
+        "Günlük ve haftalık ilerleme grafikleri",
+        "Ana ekran ve kilit ekranı widget'ları",
+        "Hesap gerektirmez, veriler cihazda kalır"
+      ]
+    },
+    {
+      "id": "budgetly",
+      "name": "Budgetly",
+      "tagline": "Harcamalarınız tek bakışta.",
+      "description": "Gelir ve giderlerinizi saniyeler içinde kaydedin, kategorilere ayırın ve aylık bütçenizi hiçbir karmaşa olmadan takip edin.",
+      "icon": "assets/images/apps/budgetly.svg",
+      "category": "Finans",
+      "platforms": ["iPhone"],
+      "status": "soon",
+      "accent": "#10b981",
+      "appStoreUrl": "",
+      "privacyUrl": "",
+      "features": [
+        "Tek dokunuşla harcama ekleme",
+        "Akıllı kategori önerileri",
+        "iCloud ile cihazlar arası senkronizasyon",
+        "Face ID ile uygulama kilidi"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Uygulama — Boznivo</title>
+  <meta name="description" content="Boznivo iOS uygulaması detayları, özellikleri ve App Store bağlantısı.">
+  <meta name="theme-color" content="#09090f">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Boznivo">
+  <meta property="og:title" content="Boznivo uygulamaları">
+  <meta property="og:description" content="Sade, hızlı ve gizliliğe saygılı iOS uygulamaları.">
+  <meta property="og:image" content="https://boznivo.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="/assets/js/tailwind.config.js"></script>
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body class="bg-ink font-sans text-zinc-300 antialiased">
+  <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div id="appGlow" class="glow glow-1" style="opacity:.25"></div>
+  </div>
+
+  <header class="border-b border-white/5">
+    <nav class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6">
+      <a href="/" class="flex items-center gap-2.5 font-display text-lg font-bold text-white">
+        <img src="/assets/images/logo.svg" alt="" width="32" height="32" class="h-8 w-8">Boznivo
+      </a>
+      <a href="/#apps" class="text-sm text-zinc-400 hover:text-white">← Tüm uygulamalar</a>
+    </nav>
+  </header>
+
+  <main id="appDetail" class="mx-auto max-w-5xl px-4 py-14 sm:px-6" aria-live="polite">
+    <div class="flex items-center gap-6">
+      <div class="skeleton h-28 w-28 rounded-[22.5%] bg-white/5"></div>
+      <div class="flex-1 space-y-3">
+        <div class="skeleton h-8 w-48 rounded-lg bg-white/5"></div>
+        <div class="skeleton h-4 w-64 rounded bg-white/5"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-white/5 px-4 py-10 text-center text-sm text-zinc-500">
+    © <span id="year">2026</span> Boznivo · <a href="mailto:support@boznivo.com" class="hover:text-white">support@boznivo.com</a>
+  </footer>
+
+  <script src="/assets/js/common.js" defer></script>
+  <script src="/assets/js/app.js" defer></script>
+</body>
+</html>
