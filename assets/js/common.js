@@ -76,7 +76,8 @@
 
   const accentOf = (app) => (/^#[0-9a-f]{3,8}$/i.test(app.accent || '') ? app.accent : '#8b5cf6');
   const detailHref = (app) => `/app.html?id=${encodeURIComponent(app.id)}`;
-  const privacyHref = (app) => safeUrl(app.privacyUrl) || `/privacy.html?app=${encodeURIComponent(app.id)}`;
+  // Her uygulamanın kendi gizlilik sayfası: /privacy/<id>/ (tools/build_privacy.py üretir)
+  const privacyHref = (app) => safeUrl(app.privacyUrl) || `/privacy/${encodeURIComponent(app.id)}/`;
 
   /* ---------- İkonlar (Lucide tarzı, satır içi) ---------- */
   const svg = (body) =>

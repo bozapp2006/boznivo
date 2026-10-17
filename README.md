@@ -11,7 +11,9 @@ Boznivo için statik portföy ve uygulama tanıtım sitesi. Build adımı yok, f
 ```
 index.html          Ana sayfa (hero, uygulamalar, ilkeler, hakkımda, SSS, iletişim)
 app.html            Uygulama detay sayfası (/app.html?id=<id>)
-privacy.html        Gizlilik politikası (?app=<id> ile uygulamaya özel, &lang=en ile İngilizce)
+privacy.html        Genel gizlilik politikası (uygulama sayfalarının şablonu)
+privacy/<id>/       Her uygulamanın kendi gizlilik sayfası (tools/build_privacy.py üretir)
+tools/              Yardımcı betikler
 apps.json           Uygulama verileri — yeni uygulama burada eklenir
 404.html            Bulunamayan sayfa
 _headers            Cloudflare Pages güvenlik/önbellek başlıkları
@@ -57,8 +59,23 @@ assets/
 - `featured: true` olan uygulama ana sayfadaki telefon maketinde gösterilir (yoksa ilk yayındaki).
 - `accent`: kartın ve telefon ekranının rengi.
 - `screenshots` isteğe bağlıdır; ilki telefon maketinde, hepsi detay sayfasındaki galeride görünür.
-- `privacyUrl` boşsa otomatik `/privacy.html?app=<id>` kullanılır — App Store Connect'te bu adresi girebilirsiniz.
+- `privacyUrl` boşsa uygulamanın kendi sayfası `/privacy/<id>/` kullanılır.
 - `sitemap.xml` dosyasına `/app.html?id=<id>` adresini de ekleyin.
+
+## Uygulamaya özel gizlilik sayfaları
+
+Her uygulamanın App Store Connect'e girilecek ayrı bir gizlilik adresi vardır:
+
+```
+https://boznivo.com/privacy/<id>/          (Türkçe / tarayıcı diline göre)
+https://boznivo.com/privacy/<id>/?lang=en  (İngilizce)
+```
+
+`apps.json`'a uygulama ekledikten ya da `privacy.html` metnini değiştirdikten sonra sayfaları yeniden üretin:
+
+```bash
+python3 tools/build_privacy.py
+```
 
 ## Metinleri düzenleme
 

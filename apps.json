@@ -1,5 +1,5 @@
 {
-  "_readme": "Yeni uygulama için 'apps' dizisine bir obje ekleyin. Zorunlu: id, name, icon. Metin alanları (tagline, description, category, features) düz metin olabilir ya da iki dilde {\"tr\": \"...\", \"en\": \"...\"} şeklinde yazılabilir. status: 'live' veya 'soon'. featured: true olan uygulama ana sayfada öne çıkarılır (yoksa ilk yayındaki). privacyUrl boşsa /privacy.html?app=<id> kullanılır. screenshots isteğe bağlıdır. icon ve screenshots için yerel dosya (assets/...) ya da https bağlantısı kullanılabilir. Yakında gelecek uygulamalar için status: 'soon' kullanın; isteğe bağlı inReview: true ('İncelemede' rozeti) ve eta: {\"tr\": \"Kasım 2026\", \"en\": \"November 2026\"} (beklenen tarih) eklenebilir.",
+  "_readme": "Yeni uygulama için 'apps' dizisine bir obje ekleyin. Zorunlu: id, name, icon. Metin alanları (tagline, description, category, features) düz metin olabilir ya da iki dilde {\"tr\": \"...\", \"en\": \"...\"} şeklinde yazılabilir. status: 'live' veya 'soon'. featured: true olan uygulama ana sayfada öne çıkarılır (yoksa ilk yayındaki). privacyUrl boşsa /privacy/<id>/ kullanılır (sayfayı üretmek için: python3 tools/build_privacy.py). screenshots isteğe bağlıdır. icon ve screenshots için yerel dosya (assets/...) ya da https bağlantısı kullanılabilir. Yakında gelecek uygulamalar için status: 'soon' kullanın; isteğe bağlı inReview: true ('İncelemede' rozeti) ve eta: {\"tr\": \"Kasım 2026\", \"en\": \"November 2026\"} (beklenen tarih) eklenebilir.",
   "apps": [
     {
       "id": "english-turkish-flashcards",
@@ -25,7 +25,7 @@
       "status": "live",
       "accent": "#7c5cff",
       "appStoreUrl": "https://apps.apple.com/tr/app/english-turkish-flashcards/id6792435351",
-      "privacyUrl": "https://bozapp2006.github.io/english-turkish-flashcards/privacy.html",
+      "privacyUrl": "",
       "features": {
         "tr": [
           "A1–C1 seviyelerinde 5000 kelime",

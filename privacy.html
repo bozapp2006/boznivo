@@ -28,7 +28,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap" media="print" onload="this.media='all'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-  <link rel="stylesheet" href="/assets/css/style.css?v=12">
+  <link rel="stylesheet" href="/assets/css/style.css?v=13">
   <script>
     (function () {
       var d = document.documentElement, l;
@@ -112,6 +112,11 @@
         <h1 data-i18n="pp.h1">Gizlilik Politikası</h1>
         <p data-i18n="pp.applies">Bu politika, <strong data-field="appName"></strong> için geçerlidir.</p>
         <small data-i18n="pp.updated">Son güncelleme: <span data-field="updated"></span></small>
+        <!-- Genel sayfada: her uygulamanın kendi politika bağlantısı (apps.json'dan) -->
+        <div id="ppAppLinks" class="pp-links" hidden>
+          <span class="subhead" data-i18n="pp.perApp">Uygulamaya özel politikalar</span>
+          <div class="tags"></div>
+        </div>
       </div>
     </section>
 
@@ -202,8 +207,8 @@
     </div>
   </footer>
 
-  <script src="/assets/js/i18n.js?v=12" defer></script>
-  <script src="/assets/js/common.js?v=12" defer></script>
+  <script src="/assets/js/i18n.js?v=13" defer></script>
+  <script src="/assets/js/common.js?v=13" defer></script>
   <script>
     // ---- Düzenlenebilir alanlar ----
     const POLICY = {
@@ -214,9 +219,11 @@
     // --------------------------------
 
     document.addEventListener('DOMContentLoaded', () => {
-      const { t, tx, loadApps } = window.Boznivo;
-      const appId = new URLSearchParams(location.search).get('app');
-      let appName = null;
+      const { t, tx, esc, loadApps, privacyHref } = window.Boznivo;
+      // Uygulamaya özel sayfalarda (privacy/<id>/) kimlik ve ad <body> üzerinde gelir;
+      // eski ?app=<id> bağlantıları da çalışmaya devam eder.
+      const appId = document.body.dataset.app || new URLSearchParams(location.search).get('app');
+      let appName = document.body.dataset.appName || null;
 
       const fill = () => {
         const set = (field, value) =>
@@ -233,13 +240,27 @@
       fill();
       document.addEventListener('langchange', fill);
 
-      if (appId) {
+      if (appId && !appName) {
         loadApps()
           .then((apps) => {
             const app = apps.find((a) => a.id === appId);
             if (app) { appName = app.name; fill(); }
           })
           .catch(() => { /* varsayılan metin kalır */ });
+      }
+
+      // Genel politika sayfasında uygulamaya özel politikaları listele
+      if (!appId) {
+        loadApps()
+          .then((apps) => {
+            const box = document.getElementById('ppAppLinks');
+            if (!apps.length) return;
+            box.querySelector('.tags').innerHTML = apps
+              .map((a) => `<a class="tag" href="${esc(privacyHref(a))}">${esc(a.name)}</a>`)
+              .join('');
+            box.hidden = false;
+          })
+          .catch(() => { /* liste gösterilmez */ });
       }
 
       // İçindekiler: görünen bölümü vurgula

@@ -109,6 +109,7 @@ window.BOZNIVO_I18N = {
     'pp.applies': 'This policy applies to <strong data-field="appName"></strong>.',
     'pp.updated': 'Last updated: <span data-field="updated"></span>',
     'pp.toc': 'Contents',
+    'pp.perApp': 'App-specific policies',
     'pp.intro': 'At <strong data-field="developer"></strong> (“we”), we care about your privacy. This Privacy Policy explains what information is collected when you use <strong data-field="appName"></strong> (the “App”), how it is used and what your rights are.',
     'pp.callout': '<strong>In short:</strong> we don’t collect personal data, we don’t track you and we don’t sell your data.',
     'pp.s1': '1. Information we collect',
