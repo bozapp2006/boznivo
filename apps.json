@@ -1,74 +1,49 @@
 {
-  "_readme": "Yeni uygulama için 'apps' dizisine bir obje ekleyin. Zorunlu: id, name, icon. Metin alanları (tagline, description, category, features) düz metin olabilir ya da iki dilde {\"tr\": \"...\", \"en\": \"...\"} şeklinde yazılabilir. status: 'live' veya 'soon'. featured: true olan uygulama ana sayfadaki telefonda gösterilir (yoksa ilk yayındaki). privacyUrl boşsa /privacy.html?app=<id> kullanılır. screenshots isteğe bağlıdır.",
+  "_readme": "Yeni uygulama için 'apps' dizisine bir obje ekleyin. Zorunlu: id, name, icon. Metin alanları (tagline, description, category, features) düz metin olabilir ya da iki dilde {\"tr\": \"...\", \"en\": \"...\"} şeklinde yazılabilir. status: 'live' veya 'soon'. featured: true olan uygulama ana sayfada öne çıkarılır (yoksa ilk yayındaki). privacyUrl boşsa /privacy.html?app=<id> kullanılır. screenshots isteğe bağlıdır. icon ve screenshots için yerel dosya (assets/...) ya da https bağlantısı kullanılabilir.",
   "apps": [
     {
-      "id": "focusly",
-      "name": "Focusly",
+      "id": "english-turkish-flashcards",
+      "name": "English-Turkish Flashcards",
       "featured": true,
       "tagline": {
-        "tr": "Odaklan, ilerle, tekrarla.",
-        "en": "Focus, progress, repeat."
+        "tr": "5000 İngilizce kelimeyi kartlarla öğren.",
+        "en": "Learn 5,000 English words with flashcards."
       },
       "description": {
-        "tr": "Pomodoro tekniğiyle çalışma seanslarınızı planlayan, dikkat dağıtıcıları azaltan ve ilerlemenizi sade grafiklerle gösteren minimal bir odak asistanı.",
-        "en": "A minimal focus companion that plans your work sessions with the Pomodoro technique, cuts down distractions and shows your progress in clean, simple charts."
+        "tr": "A1'den C1'e kadar 5000 İngilizce kelimeyi telaffuzu, fonetik yazımı, örnek cümlesi ve Türkçe karşılığıyla öğrenin. Hız Turu, dinleme alıştırmaları ve aralıklı tekrar sistemi sayesinde öğrendikleriniz kalıcı olsun.",
+        "en": "Learn 5,000 English words from A1 to C1, each with pronunciation, phonetics, an example sentence and its Turkish meaning. Speed rounds, listening practice and spaced repetition help the words stick."
       },
-      "icon": "assets/images/apps/focusly.svg",
-      "category": { "tr": "Verimlilik", "en": "Productivity" },
+      "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/94/42/15/94421521-35c8-ae94-75df-499dc02fa88e/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
+      "category": { "tr": "Eğitim", "en": "Education" },
       "platforms": ["iPhone", "iPad"],
       "status": "live",
-      "accent": "#8b5cf6",
-      "appStoreUrl": "https://apps.apple.com/app/id0000000000",
-      "privacyUrl": "",
+      "accent": "#7c5cff",
+      "appStoreUrl": "https://apps.apple.com/tr/app/english-turkish-flashcards/id6792435351",
+      "privacyUrl": "https://bozapp2006.github.io/english-turkish-flashcards/privacy.html",
       "features": {
         "tr": [
-          "Özelleştirilebilir Pomodoro zamanlayıcı",
-          "Günlük ve haftalık ilerleme grafikleri",
-          "Ana ekran ve kilit ekranı widget'ları",
-          "Hesap gerektirmez, veriler cihazda kalır"
+          "A1–C1 seviyelerinde 5000 kelime",
+          "Telaffuz, fonetik yazım ve örnek cümleler",
+          "Aralıklı tekrar (SRS) ile günlük tekrar",
+          "İki yönlü quiz: İngilizce → Türkçe, Türkçe → İngilizce",
+          "60 saniyelik Hız Turu ve dinleme modu",
+          "Seri, rozet ve ilerleme istatistikleri"
         ],
         "en": [
-          "Customizable Pomodoro timer",
-          "Daily and weekly progress charts",
-          "Home and Lock Screen widgets",
-          "No account needed, data stays on device"
+          "5,000 words across A1–C1 levels",
+          "Pronunciation, phonetics and example sentences",
+          "Daily review with spaced repetition (SRS)",
+          "Two-way quizzes: English → Turkish and Turkish → English",
+          "60-second Speed Round and listening mode",
+          "Streaks, badges and progress stats"
         ]
       },
-      "screenshots": []
-    },
-    {
-      "id": "budgetly",
-      "name": "Budgetly",
-      "tagline": {
-        "tr": "Harcamalarınız tek bakışta.",
-        "en": "Your spending at a glance."
-      },
-      "description": {
-        "tr": "Gelir ve giderlerinizi saniyeler içinde kaydedin, kategorilere ayırın ve aylık bütçenizi hiçbir karmaşa olmadan takip edin.",
-        "en": "Log income and expenses in seconds, sort them into categories and keep track of your monthly budget without any clutter."
-      },
-      "icon": "assets/images/apps/budgetly.svg",
-      "category": { "tr": "Finans", "en": "Finance" },
-      "platforms": ["iPhone"],
-      "status": "soon",
-      "accent": "#10b981",
-      "appStoreUrl": "",
-      "privacyUrl": "",
-      "features": {
-        "tr": [
-          "Tek dokunuşla harcama ekleme",
-          "Akıllı kategori önerileri",
-          "iCloud ile cihazlar arası senkronizasyon",
-          "Face ID ile uygulama kilidi"
-        ],
-        "en": [
-          "Add expenses with a single tap",
-          "Smart category suggestions",
-          "Sync across devices with iCloud",
-          "App lock with Face ID"
-        ]
-      },
-      "screenshots": []
+      "screenshots": [
+        "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/ae/4a/b5/ae4ab5c5-ab0a-17fa-a16a-7b7106eaafda/appstore_raw_1_1290x2796.png/600x1300bb.jpg",
+        "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/9a/fc/8d/9afc8d8a-4fb5-808c-b123-456494af48f2/appstore_raw_2_1290x2796.png/600x1300bb.jpg",
+        "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/7c/f7/89/7cf7895b-ba41-caa1-892d-f598689195a4/appstore_raw_3_1290x2796.png/600x1300bb.jpg",
+        "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/d3/9a/e9/d39ae9d6-1fe8-a5bf-77af-3e579cc7bef5/appstore_raw_4_1290x2796.png/600x1300bb.jpg"
+      ]
     }
   ]
 }
