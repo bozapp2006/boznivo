@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- Geçici ikon: gerçek App Store ikonu (collage-english.png) eklenince değiştirilecek -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22395c"/>
+      <stop offset="1" stop-color="#172a44"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="url(#bg)"/>
+  <!-- tüy -->
+  <g transform="translate(150 196) rotate(-12)" fill="#2e4a70">
+    <path d="M-92 4 C -40 -26 40 -30 88 -8 C 60 16 -10 22 -92 4 Z"/>
+    <path d="M-104 8 L -60 2" stroke="#2e4a70" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <g font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="#c9a55f" text-anchor="middle">
+    <text x="128" y="114" font-size="50" letter-spacing="-1">Collage</text>
+    <text x="128" y="156" font-size="50" letter-spacing="-1">English</text>
+  </g>
+</svg>

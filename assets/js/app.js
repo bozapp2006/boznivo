@@ -61,7 +61,7 @@
     const infoStrip = [
       infoCell(t('category'), esc(category)),
       infoCell(t('platforms'), esc(platforms)),
-      infoCell(t('status'), app.status === 'live' ? t('live') : t('soon')),
+      infoCell(t('status'), app.status === 'live' ? t('live') : esc(tx(app.eta)) || (app.inReview ? t('inReview') : t('soon'))),
       infoCell(t('developer'), 'Boznivo'),
     ].join('');
 
@@ -101,8 +101,8 @@
       </div>
 
       <section class="section detail-section">
-        <div class="container detail-body">
-          <div>
+        <div class="container detail-body${description || shots || features ? '' : ' detail-body--compact'}">
+          ${description || shots || features ? `<div>
             ${description ? `
               <h2 class="subhead reveal">${t('about')}</h2>
               <p class="detail-desc reveal" style="margin-top:14px">${esc(description)}</p>` : ''}
@@ -112,7 +112,7 @@
             ${features ? `
               <h2 class="subhead reveal" style="margin-top:56px">${t('features')}</h2>
               <ul class="features-grid">${features}</ul>` : ''}
-          </div>
+          </div>` : ''}
 
           <aside class="aside-card reveal">
             <div class="label-card">

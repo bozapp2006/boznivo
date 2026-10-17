@@ -3,4 +3,6 @@
   <url><loc>https://boznivo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://boznivo.com/privacy.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
   <url><loc>https://boznivo.com/app.html?id=english-turkish-flashcards</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://boznivo.com/app.html?id=collage-english</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://boznivo.com/app.html?id=memory-master-2006</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>

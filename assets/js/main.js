@@ -18,6 +18,21 @@
       <span class="app-tile__go">${t('view')} ${icons.arrow}</span>
     </a>`;
 
+  // "Çok yakında" kartı: kategori yerine slogan, rozette beklenen tarih ya da inceleme durumu
+  const soonTileHTML = (app, i) => {
+    const note = tx(app.eta) || (app.inReview ? t('inReview') : t('soon'));
+    return `
+    <a href="${esc(detailHref(app))}" class="app-tile app-tile--soon reveal" style="--accent:${accentOf(app)};--d:${i * 70}ms" aria-label="${esc(app.name)}: ${esc(tx(app.tagline))}">
+      <img class="app-tile__icon" src="${esc(asset(app.icon))}" alt="" width="232" height="232" loading="lazy">
+      <span class="app-tile__body">
+        <span class="app-tile__name">${esc(app.name)}</span>
+        <span class="app-tile__meta">${esc(tx(app.tagline) || tx(app.category))}</span>
+        <span class="status status--soon">${esc(note)}</span>
+      </span>
+      <span class="app-tile__go">${t('view')} ${icons.arrow}</span>
+    </a>`;
+  };
+
   const nextTileHTML = (i) => `
     <div class="app-tile app-tile--next reveal" style="--d:${i * 70}ms">
       <span class="app-tile__icon">${icons.plus}</span>
@@ -73,16 +88,26 @@
     const grid = $('#appsGrid');
     try {
       const apps = await loadApps();
-      $('#statApps').textContent = String(apps.length);
-      renderHero(apps);
+      const live = apps.filter((a) => a.status === 'live');
+      const soon = apps.filter((a) => a.status !== 'live');
+      $('#statApps').textContent = String(live.length);
+      renderHero(live.length ? live : apps);
 
-      grid.innerHTML = apps.map(tileHTML).join('') + nextTileHTML(apps.length);
+      // Yayındakiler "Uygulamalarım"da; "Sıradaki" kutusu yalnızca yakında bölümü boşken görünür
+      grid.innerHTML = live.map(tileHTML).join('') + (soon.length ? '' : nextTileHTML(live.length));
+
+      const soonSection = $('#soon');
+      const soonGrid = $('#soonGrid');
+      soonSection.hidden = !soon.length;
+      soonGrid.innerHTML = soon.map(soonTileHTML).join('');
+
       $('#footerApps').innerHTML = apps
         .map((a) => `<li><a href="${esc(detailHref(a))}">${esc(a.name)}</a></li>`)
         .join('');
       // Dil değişiminde yeniden çizilen kartlar animasyonsuz görünsün
-      if (render.done) grid.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-in'));
+      if (render.done) [grid, soonSection].forEach((el) => el.querySelectorAll('.reveal').forEach((r) => r.classList.add('is-in')));
       reveal(grid);
+      reveal(soonSection);
       render.done = true;
     } catch (err) {
       console.error('apps.json yüklenemedi:', err);

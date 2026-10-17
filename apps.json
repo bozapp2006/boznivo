@@ -1,5 +1,5 @@
 {
-  "_readme": "Yeni uygulama için 'apps' dizisine bir obje ekleyin. Zorunlu: id, name, icon. Metin alanları (tagline, description, category, features) düz metin olabilir ya da iki dilde {\"tr\": \"...\", \"en\": \"...\"} şeklinde yazılabilir. status: 'live' veya 'soon'. featured: true olan uygulama ana sayfada öne çıkarılır (yoksa ilk yayındaki). privacyUrl boşsa /privacy.html?app=<id> kullanılır. screenshots isteğe bağlıdır. icon ve screenshots için yerel dosya (assets/...) ya da https bağlantısı kullanılabilir.",
+  "_readme": "Yeni uygulama için 'apps' dizisine bir obje ekleyin. Zorunlu: id, name, icon. Metin alanları (tagline, description, category, features) düz metin olabilir ya da iki dilde {\"tr\": \"...\", \"en\": \"...\"} şeklinde yazılabilir. status: 'live' veya 'soon'. featured: true olan uygulama ana sayfada öne çıkarılır (yoksa ilk yayındaki). privacyUrl boşsa /privacy.html?app=<id> kullanılır. screenshots isteğe bağlıdır. icon ve screenshots için yerel dosya (assets/...) ya da https bağlantısı kullanılabilir. Yakında gelecek uygulamalar için status: 'soon' kullanın; isteğe bağlı inReview: true ('İncelemede' rozeti) ve eta: {\"tr\": \"Kasım 2026\", \"en\": \"November 2026\"} (beklenen tarih) eklenebilir.",
   "apps": [
     {
       "id": "english-turkish-flashcards",
@@ -14,8 +14,14 @@
         "en": "Learn 5,000 English words from A1 to C1, each with pronunciation, phonetics, an example sentence and its Turkish meaning. Speed rounds, listening practice and spaced repetition help the words stick."
       },
       "icon": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/94/42/15/94421521-35c8-ae94-75df-499dc02fa88e/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/512x512bb.jpg",
-      "category": { "tr": "Eğitim", "en": "Education" },
-      "platforms": ["iPhone", "iPad"],
+      "category": {
+        "tr": "Eğitim",
+        "en": "Education"
+      },
+      "platforms": [
+        "iPhone",
+        "iPad"
+      ],
       "status": "live",
       "accent": "#7c5cff",
       "appStoreUrl": "https://apps.apple.com/tr/app/english-turkish-flashcards/id6792435351",
@@ -44,6 +50,48 @@
         "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/7c/f7/89/7cf7895b-ba41-caa1-892d-f598689195a4/appstore_raw_3_1290x2796.png/600x1300bb.jpg",
         "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/d3/9a/e9/d39ae9d6-1fe8-a5bf-77af-3e579cc7bef5/appstore_raw_4_1290x2796.png/600x1300bb.jpg"
       ]
+    },
+    {
+      "id": "collage-english",
+      "name": "Collage English",
+      "status": "soon",
+      "inReview": true,
+      "tagline": {
+        "tr": "İngilizce öğrenmenin yeni yolu.",
+        "en": "A new way to learn English."
+      },
+      "icon": "assets/images/apps/collage-english.svg",
+      "category": {
+        "tr": "Eğitim",
+        "en": "Education"
+      },
+      "platforms": [
+        "iPhone"
+      ],
+      "accent": "#36598c",
+      "appStoreUrl": "",
+      "privacyUrl": ""
+    },
+    {
+      "id": "memory-master-2006",
+      "name": "Memory Master 2006",
+      "status": "soon",
+      "inReview": true,
+      "tagline": {
+        "tr": "Kartları eşleştir, hafızanı güçlendir.",
+        "en": "Match the cards, train your memory."
+      },
+      "icon": "assets/images/apps/memory-master-2006.svg",
+      "category": {
+        "tr": "Oyun",
+        "en": "Games"
+      },
+      "platforms": [
+        "iPhone"
+      ],
+      "accent": "#5b46d6",
+      "appStoreUrl": "",
+      "privacyUrl": ""
     }
   ]
 }
