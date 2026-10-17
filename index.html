@@ -147,7 +147,7 @@
           </div>
           <div class="chip chip--b" aria-hidden="true">
             <span class="chip__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
-            <span><strong data-i18n="chip.b.t">%100 Swift</strong><span data-i18n="chip.b.s">Native ve akıcı</span></span>
+            <span><strong data-i18n="chip.b.t">Flutter</strong><span data-i18n="chip.b.s">Hızlı ve akıcı</span></span>
           </div>
         </div>
       </div>
@@ -157,10 +157,10 @@
     <div class="marquee" aria-hidden="true">
       <div class="marquee__track">
         <div class="marquee__group">
-          <span class="marquee__item">SwiftUI</span>
-          <span class="marquee__item">WidgetKit</span>
-          <span class="marquee__item" data-i18n="mq.icloud">iCloud senkronizasyon</span>
-          <span class="marquee__item">Face ID</span>
+          <span class="marquee__item">Flutter</span>
+          <span class="marquee__item">Dart</span>
+          <span class="marquee__item" data-i18n="mq.anim">Akıcı animasyonlar</span>
+          <span class="marquee__item" data-i18n="mq.clean">Sade arayüz</span>
           <span class="marquee__item" data-i18n="mq.dark">Karanlık mod</span>
           <span class="marquee__item" data-i18n="mq.a11y">Erişilebilirlik</span>
           <span class="marquee__item" data-i18n="mq.noads">Reklamsız</span>
@@ -168,10 +168,10 @@
           <span class="marquee__item">iPhone &amp; iPad</span>
         </div>
         <div class="marquee__group">
-          <span class="marquee__item">SwiftUI</span>
-          <span class="marquee__item">WidgetKit</span>
-          <span class="marquee__item" data-i18n="mq.icloud">iCloud senkronizasyon</span>
-          <span class="marquee__item">Face ID</span>
+          <span class="marquee__item">Flutter</span>
+          <span class="marquee__item">Dart</span>
+          <span class="marquee__item" data-i18n="mq.anim">Akıcı animasyonlar</span>
+          <span class="marquee__item" data-i18n="mq.clean">Sade arayüz</span>
           <span class="marquee__item" data-i18n="mq.dark">Karanlık mod</span>
           <span class="marquee__item" data-i18n="mq.a11y">Erişilebilirlik</span>
           <span class="marquee__item" data-i18n="mq.noads">Reklamsız</span>
@@ -239,16 +239,19 @@
 
           <article class="bento__item bento__item--wide reveal" style="--d:80ms">
             <div class="bento__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
-            <h3 class="bento__title" data-i18n="pr.native.t">Native, hızlı ve hafif</h3>
-            <p class="bento__text" data-i18n="pr.native.d">Swift ve SwiftUI ile yazılır; anında açılır, pili yormaz ve iOS'un sunduğu her şeyle doğal şekilde bütünleşir.</p>
+            <h3 class="bento__title" data-i18n="pr.native.t">Flutter ile hızlı ve akıcı</h3>
+            <p class="bento__text" data-i18n="pr.native.d">Flutter ve Dart ile yazılır; hızlı açılır, akıcı animasyonlarla çalışır ve iPhone'da doğal hissettiren arayüzler sunar.</p>
             <div class="bento__visual">
               <div class="code-card" aria-hidden="true">
                 <div class="code-card__bar"><span></span><span></span><span></span></div>
-<pre><span class="tok-k">struct</span> <span class="tok-t">BoznivoApp</span>: <span class="tok-t">App</span> {
-  <span class="tok-k">var</span> body: <span class="tok-k">some</span> <span class="tok-t">Scene</span> {
-    <span class="tok-t">WindowGroup</span> {
-      <span class="tok-f">ContentView</span>()  <span class="tok-c">// simple, fast, crafted</span>
-    }
+<pre><span class="tok-k">void</span> <span class="tok-f">main</span>() =&gt; <span class="tok-f">runApp</span>(<span class="tok-k">const</span> <span class="tok-t">BoznivoApp</span>());
+
+<span class="tok-k">class</span> <span class="tok-t">BoznivoApp</span> <span class="tok-k">extends</span> <span class="tok-t">StatelessWidget</span> {
+  <span class="tok-k">const</span> <span class="tok-t">BoznivoApp</span>({<span class="tok-k">super</span>.key});
+
+  <span class="tok-k">@override</span>
+  <span class="tok-t">Widget</span> <span class="tok-f">build</span>(<span class="tok-t">BuildContext</span> context) {
+    <span class="tok-k">return</span> <span class="tok-k">const</span> <span class="tok-t">HomeScreen</span>(); <span class="tok-c">// simple, fast, crafted</span>
   }
 }</pre>
               </div>
@@ -264,9 +267,9 @@
           <article class="bento__item reveal" style="--d:160ms">
             <div class="bento__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg></div>
             <h3 class="bento__title" data-i18n="pr.devices.t">Her ekranda</h3>
-            <p class="bento__text" data-i18n="pr.devices.d">iPhone ve iPad'de, widget'larda ve kilit ekranında tutarlı deneyim.</p>
+            <p class="bento__text" data-i18n="pr.devices.d">iPhone'da ve iPad'de aynı özenle tasarlanmış, tutarlı bir deneyim.</p>
             <div class="bento__visual tags">
-              <span class="tag">iPhone</span><span class="tag">iPad</span><span class="tag">Widget</span><span class="tag">iCloud</span>
+              <span class="tag">iPhone</span><span class="tag">iPad</span><span class="tag">Flutter</span><span class="tag">Dart</span>
             </div>
           </article>
         </div>
@@ -279,7 +282,7 @@
         <div class="about__text reveal">
           <span class="kicker" data-i18n="about.kicker">Hakkımda</span>
           <h2 class="section-title" data-i18n="about.title">Daha az özellik,<br>daha çok <span class="serif text-grad">özen.</span></h2>
-          <p data-i18n="about.p1">Ben Boznivo'nun arkasındaki bağımsız mobil geliştiriciyim. Swift ve SwiftUI ile, Apple'ın tasarım ilkelerine sadık kalarak; gereksiz karmaşadan arınmış, hızlı açılan ve verilerinizi yalnızca sizin cihazınızda tutan uygulamalar geliştiriyorum.</p>
+          <p data-i18n="about.p1">Ben Boznivo'nun arkasındaki bağımsız mobil geliştiriciyim. Flutter ve Dart ile, Apple'ın tasarım ilkelerine sadık kalarak; gereksiz karmaşadan arınmış, hızlı açılan ve verilerinizi yalnızca sizin cihazınızda tutan uygulamalar geliştiriyorum.</p>
           <p data-i18n="about.p2">Büyük ekipler yerine küçük ve odaklı çalışmayı seçiyorum. Bu sayede her geri bildirimi okuyor, her detayı kendim cilalıyorum.</p>
           <blockquote class="quote" data-i18n="about.quote">“Kullanıcıyı ürüne değil, ürünü kullanıcıya hizmet ettiren yazılımlar.”</blockquote>
         </div>
@@ -350,7 +353,7 @@
       <div class="footer__grid">
         <div class="footer__brand">
           <a href="/" class="brand"><img src="/assets/images/logo.svg" alt="" width="30" height="30">Boznivo</a>
-          <p data-i18n="footer.blurb">Sade, hızlı ve gizliliğe saygılı iOS uygulamaları. Swift ile, özenle.</p>
+          <p data-i18n="footer.blurb">Sade, hızlı ve gizliliğe saygılı iOS uygulamaları. Flutter ile, özenle.</p>
         </div>
         <div>
           <h4 data-i18n="footer.apps">Uygulamalar</h4>
@@ -376,7 +379,7 @@
       <div class="footer__wordmark" aria-hidden="true">boznivo</div>
       <div class="footer__bottom">
         <span>© <span data-year>2026</span> Boznivo. <span data-i18n="footer.rights">Tüm hakları saklıdır.</span></span>
-        <span data-i18n="footer.made">Swift ile özenle geliştirildi.</span>
+        <span data-i18n="footer.made">Flutter ile özenle geliştirildi.</span>
       </div>
     </div>
   </footer>
