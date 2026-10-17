@@ -5,16 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title data-i18n="nf.title">Sayfa bulunamadı — Boznivo</title>
   <meta name="robots" content="noindex">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Boznivo">
+  <meta name="format-detection" content="telephone=no">
   <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <!-- Yazı tipleri sayfayı bekletmeden yüklenir; iPhone/Mac'te sistem fontu (SF Pro) kullanılır -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/style.css?v=8">
   <script>
     (function () {
       var d = document.documentElement, l;
       d.classList.add('js');
-      try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') d.dataset.theme = t; l = localStorage.getItem('lang'); } catch (e) {}
+      try { var t = localStorage.getItem('theme'); l = localStorage.getItem('lang'); } catch (e) {}
+      if (t === 'light' || t === 'dark') {
+        d.dataset.theme = t;
+        // Safari'nin üst/alt çubuk rengi seçilen temayla aynı olsun
+        [].forEach.call(document.querySelectorAll('meta[name="theme-color"]'), function (m) { m.media = 'all'; m.content = t === 'dark' ? '#09090b' : '#fbfbfa'; });
+      }
       if (l !== 'tr' && l !== 'en') l = /^tr\b/i.test(navigator.language || '') ? 'tr' : 'en';
       d.lang = l;
       if (l === 'en') { d.classList.add('i18n-pending'); setTimeout(function () { d.classList.remove('i18n-pending'); }, 2000); }
@@ -38,7 +51,7 @@
       <a href="/" class="btn btn--primary" data-i18n="nf.cta">Ana sayfaya dön</a>
     </div>
   </main>
-  <script src="/assets/js/i18n.js" defer></script>
-  <script src="/assets/js/common.js" defer></script>
+  <script src="/assets/js/i18n.js?v=8" defer></script>
+  <script src="/assets/js/common.js?v=8" defer></script>
 </body>
 </html>

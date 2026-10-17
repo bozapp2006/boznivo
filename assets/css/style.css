@@ -13,6 +13,7 @@
   --muted: #6b6b75;
   --line: rgba(13, 13, 16, 0.08);
   --line-strong: rgba(13, 13, 16, 0.16);
+  --seg-active: #ffffff;
 
   --brand: #6e56ff;
   --brand-2: #b44bff;
@@ -52,6 +53,7 @@
     --muted: #9a9aa5;
     --line: rgba(255, 255, 255, 0.08);
     --line-strong: rgba(255, 255, 255, 0.16);
+    --seg-active: #3a3a40;
     --ok: #4ade80;
     --ok-bg: rgba(74, 222, 128, 0.12);
     --warn: #fbbf24;
@@ -70,6 +72,7 @@
   --muted: #9a9aa5;
   --line: rgba(255, 255, 255, 0.08);
   --line-strong: rgba(255, 255, 255, 0.16);
+  --seg-active: #3a3a40;
   --ok: #4ade80;
   --ok-bg: rgba(74, 222, 128, 0.12);
   --warn: #fbbf24;
@@ -83,6 +86,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 html {
   -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--nav-h) + 16px);
   background: var(--bg);
@@ -102,6 +106,8 @@ body {
 img, svg { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+/* Çift dokunma ile yakınlaştırma gecikmesini kaldır (iOS) */
+a, button, summary, .app-tile, .today-card { touch-action: manipulation; }
 h1, h2, h3, h4 { margin: 0; font-weight: 600; line-height: 1.1; letter-spacing: -0.025em; }
 p, figure { margin: 0; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
@@ -109,8 +115,13 @@ code { font-family: var(--font-mono); }
 :focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 10px; }
 ::selection { background: color-mix(in srgb, var(--brand) 28%, transparent); }
 
-.container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: 20px; }
-@media (min-width: 768px) { .container { padding-inline: 32px; } }
+.container {
+  width: 100%; max-width: var(--container); margin-inline: auto;
+  padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right));
+}
+@media (min-width: 768px) {
+  .container { padding-left: max(32px, env(safe-area-inset-left)); padding-right: max(32px, env(safe-area-inset-right)); }
+}
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -173,6 +184,7 @@ code { font-family: var(--font-mono); }
 /* ---------- Navigasyon ---------- */
 .nav {
   position: sticky; top: 0; z-index: 50;
+  padding-top: env(safe-area-inset-top); /* ana ekrana eklenmiş (tam ekran) modda çentik altı */
   border-bottom: 1px solid transparent;
   transition: background-color 0.3s, border-color 0.3s;
 }
@@ -219,11 +231,55 @@ code { font-family: var(--font-mono); }
   .nav__cta { display: inline-flex; }
   .nav__menu-btn { display: none; }
 }
-.mobile-menu { display: none; padding: 4px 20px 20px; }
-.nav.is-open .mobile-menu { display: block; }
-.mobile-menu a { display: block; padding: 14px 0; border-bottom: 1px solid var(--line); font-weight: 500; font-size: 1.05rem; }
-.mobile-menu a:last-child { border-bottom: 0; }
-@media (min-width: 900px) { .nav.is-open .mobile-menu { display: none; } }
+/* Hamburger → X */
+.burger { position: relative; display: block; width: 18px; height: 12px; }
+.burger span {
+  position: absolute; left: 0; right: 0; height: 1.8px; border-radius: 2px; background: currentColor;
+  transition: transform 0.3s var(--ease), top 0.3s var(--ease);
+}
+.burger span:first-child { top: 2px; }
+.burger span:last-child { top: 8px; }
+.nav.is-open .burger span:first-child { top: 5px; transform: rotate(45deg); }
+.nav.is-open .burger span:last-child { top: 5px; transform: rotate(-45deg); }
+
+/* Mobil menü: iOS ayar ekranı gibi gruplu liste + segment kontrolleri */
+.mobile-menu {
+  display: none; position: absolute; left: 0; right: 0; top: 100%;
+  height: calc(100vh - var(--nav-h));
+  height: calc(100dvh - var(--nav-h) - env(safe-area-inset-top));
+  overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+  padding: 16px max(20px, env(safe-area-inset-right)) calc(32px + env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  background: var(--bg); border-top: 1px solid var(--line);
+}
+.nav.is-open .mobile-menu { display: block; animation: sheetIn 0.35s var(--ease); }
+@media (min-width: 900px) { .nav .mobile-menu { display: none !important; } }
+/* Menü açıkken arka plan kaymasın. body'ye overflow:hidden vermek iOS Safari'de
+   yapışkan üst çubuğu bozduğu için yalnızca html kilitlenir ve çubuk sabitlenir. */
+html.menu-open { overflow: hidden; }
+html.menu-open .nav { position: fixed; left: 0; right: 0; top: 0; }
+.sheet-group { border-radius: 14px; background: var(--bg-elev); border: 1px solid var(--line); overflow: hidden; }
+.sheet-group a {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: 52px; padding: 0 16px; font-size: 1.06rem; font-weight: 500;
+  border-bottom: 1px solid var(--line); transition: background-color 0.15s;
+}
+.sheet-group a:last-child { border-bottom: 0; }
+.sheet-group a:active { background: var(--bg-soft); }
+.sheet-group svg { width: 16px; height: 16px; color: var(--muted); opacity: 0.7; }
+.sheet-label { margin: 26px 6px 8px; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.segmented {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 2px; padding: 3px;
+  border-radius: 12px; background: var(--bg-soft); border: 1px solid var(--line);
+}
+.segmented button {
+  height: 38px; border-radius: 9px; font-size: 0.93rem; font-weight: 500; color: var(--fg-2);
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.segmented button[aria-pressed="true"] {
+  background: var(--seg-active); color: var(--fg); font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 0 0.5px var(--line-strong);
+}
+.sheet-cta { width: 100%; height: 52px; margin-top: 30px; }
 
 /* ---------- Hero ---------- */
 .hero { position: relative; isolation: isolate; padding: 48px 0 88px; overflow: hidden; }
@@ -382,7 +438,9 @@ code { font-family: var(--font-mono); }
 .marquee:hover .marquee__track { animation-play-state: paused; }
 .marquee__group { display: flex; align-items: center; gap: 40px; padding-right: 40px; }
 .marquee__item { display: inline-flex; align-items: center; gap: 40px; white-space: nowrap; font-weight: 500; color: var(--muted); font-size: 0.98rem; }
-.marquee__item::after { content: "✦"; color: var(--brand); font-size: 0.75rem; opacity: 0.8; }
+.marquee__item::after { /* ayırıcı: her cihazda aynı görünen CSS şekli (✦ iOS'ta kutu olarak çıkıyordu) */
+  content: ""; width: 6px; height: 6px; border-radius: 1.5px; background: var(--brand); opacity: 0.75; rotate: 45deg;
+}
 
 /* ---------- Bölümler ---------- */
 .section { padding: 96px 0; }
@@ -427,6 +485,7 @@ a.app-tile:hover::before { opacity: 1; }
   transition: transform 0.5s var(--ease);
 }
 a.app-tile:hover .app-tile__icon { transform: scale(1.06) rotate(-3deg); }
+.app-tile__body { display: flex; flex-direction: column; align-items: center; min-width: 0; max-width: 100%; }
 .app-tile__name { margin-top: 20px; font-size: 1.12rem; font-weight: 600; letter-spacing: -0.02em; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .app-tile__meta { margin-top: 2px; font-size: 0.84rem; color: var(--muted); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .app-tile__go {
@@ -570,7 +629,7 @@ a.app-tile:hover .app-tile__go svg { transform: translateX(3px); }
 @media (min-width: 768px) { .cta { padding: 96px 48px; } }
 
 /* ---------- Altbilgi ---------- */
-.footer { border-top: 1px solid var(--line); padding: 64px 0 28px; overflow: hidden; }
+.footer { border-top: 1px solid var(--line); padding: 64px 0 calc(28px + env(safe-area-inset-bottom)); overflow: hidden; }
 .footer__grid { display: grid; gap: 40px 24px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .footer__brand { grid-column: 1 / -1; }
 @media (min-width: 900px) {
@@ -674,7 +733,7 @@ a.app-tile:hover .app-tile__go svg { transform: translateX(3px); }
 .prose .callout p { margin: 0; }
 
 /* ---------- 404 ---------- */
-.notfound { min-height: calc(100vh - var(--nav-h) - 160px); display: grid; place-items: center; text-align: center; padding: 64px 0; }
+.notfound { min-height: calc(100vh - var(--nav-h) - 160px); min-height: calc(100svh - var(--nav-h) - 160px); display: grid; place-items: center; text-align: center; padding: 64px 0; }
 .notfound__code { font-size: clamp(6rem, 22vw, 12rem); font-weight: 700; letter-spacing: -0.07em; line-height: 0.9; }
 .notfound p { margin-top: 12px; color: var(--muted); font-size: 1.1rem; }
 .notfound .btn { margin-top: 32px; }
@@ -696,11 +755,184 @@ a.app-tile:hover .app-tile__go svg { transform: translateX(3px); }
 }
 .js .reveal.is-in { opacity: 1; transform: none; }
 
+/* ==========================================================================
+   iPhone / dokunmatik uyumu
+   ========================================================================== */
+
+/* iOS Safari'de Apple'ın sistem fontu (SF Pro) kullanılır — yerel uygulama hissi.
+   @supports (-webkit-touch-callout) yalnızca iOS Safari'de geçerlidir. */
+@supports (-webkit-touch-callout: none) {
+  :root { --font: -apple-system, system-ui, "SF Pro Text", "Geist", sans-serif; }
+  .hero__title { letter-spacing: -0.035em; }
+  .section-title, .detail-hero__title, .cta__title, .legal-head h1 { letter-spacing: -0.03em; }
+}
+
+/* Dokunmatik ekranda "takılı kalan" hover efektlerini kapat */
+@media (hover: none) {
+  a.app-tile:hover { transform: none; box-shadow: none; border-color: var(--line); }
+  a.app-tile:hover::before { opacity: 0.75; }
+  a.app-tile:hover .app-tile__icon { transform: none; }
+  .btn--primary:hover, .btn-store:hover { transform: none; }
+  .step:hover { transform: none; border-color: var(--line); }
+  .btn:hover svg, .link-arrow:hover svg, a.app-tile:hover .app-tile__go svg, .back-link:hover svg { transform: none; }
+}
+/* Dokununca iOS'taki gibi hafif "basılma" hissi */
+.btn:active, .btn-store:active, .today-card:active, a.app-tile:active, .icon-btn:active {
+  transform: scale(0.97); transition-duration: 0.1s;
+}
+.btn-store[aria-disabled="true"]:active { transform: none; }
+
+/* ---------- App Store "Bugün" kartı (yalnızca telefonda) ---------- */
+.today-slot { display: none; }
+.today-card {
+  --accent: #8b5cf6;
+  position: relative; isolation: isolate; overflow: hidden;
+  display: flex; flex-direction: column; min-height: 420px; border-radius: 26px; color: #fff;
+  background:
+    radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--accent) 55%, #fff) 0%, transparent 60%),
+    linear-gradient(180deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 45%, #050507) 100%);
+  box-shadow: 0 24px 50px -24px color-mix(in srgb, var(--accent) 80%, transparent);
+  transition: transform 0.25s var(--ease);
+}
+.today-card__top { display: flex; flex-direction: column; padding: 22px 22px 0; }
+.today-card__eyebrow { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; }
+.today-card__title { margin-top: 4px; font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
+.today-card__tag { margin-top: 4px; font-size: 1rem; opacity: 0.88; }
+.today-card__art {
+  width: 150px; height: 150px; margin: auto; border-radius: 22.5%; rotate: -8deg;
+  box-shadow: 0 30px 50px -18px rgba(0, 0, 0, 0.55);
+}
+.today-card__bar {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+  background: rgba(0, 0, 0, 0.2); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+}
+.today-card__bar img { width: 44px; height: 44px; border-radius: 22.5%; flex: none; }
+.today-card__info { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.today-card__info strong { font-size: 0.95rem; font-weight: 600; }
+.today-card__info span { font-size: 0.8rem; opacity: 0.75; }
+.pill {
+  display: inline-flex; align-items: center; height: 30px; padding: 0 16px; border-radius: 999px; flex: none;
+  background: #fff; color: #0d0d10; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase;
+}
+
+/* ---------- Uygulama bilgi şeridi (detay sayfası) ---------- */
+.info-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid var(--line); }
+.info-strip__cell { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 18px 12px; text-align: center; min-width: 0; }
+.info-strip__cell + .info-strip__cell { border-left: 1px solid var(--line); }
+.info-strip__cell span { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.info-strip__cell strong { font-size: 1.02rem; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.detail-section { padding-top: 64px; }
+
+/* ---------- Menü: telefonda tüm ayarlar menüde ---------- */
+@media (max-width: 899px) {
+  .nav__actions .lang-btn, .nav__actions [data-theme-toggle] { display: none; }
+}
+
+/* ---------- Telefon düzeni ---------- */
+@media (prefers-color-scheme: dark) and (max-width: 719px) {
+  :root:not([data-theme="light"]) .app-tile__go { color: color-mix(in srgb, var(--accent) 70%, #fff); }
+}
+@media (max-width: 719px) {
+  :root { --nav-h: 56px; }
+  .brand { font-size: 1.06rem; }
+  .brand img { width: 28px; height: 28px; border-radius: 8px; }
+  .icon-btn { width: 38px; height: 38px; }
+
+  .section { padding: 64px 0; }
+  .section--tight-top { padding-top: 0; }
+  .section-head { margin-bottom: 28px; gap: 12px; }
+  .section-title { font-size: 2.15rem; }
+  .section-lead { font-size: 1rem; }
+
+  /* Hero: telefon maketi yerine "Bugün" kartı */
+  .hero { padding: 28px 0 48px; }
+  .hero__title { margin-top: 20px; font-size: clamp(2.6rem, 12vw, 3.3rem); }
+  .hero__lead { margin-top: 18px; font-size: 1.04rem; }
+  .hero__actions { margin-top: 28px; flex-direction: column; gap: 10px; }
+  .hero__actions .btn { width: 100%; height: 52px; }
+  .stats { margin-top: 32px; }
+  .stage { display: none; }
+  .today-slot { display: block; margin-top: 36px; }
+  .marquee { padding: 14px 0; }
+
+  /* Uygulamalar: App Store tarzı liste */
+  .apps-grid, .more-apps {
+    display: block; overflow: visible; padding: 0 16px;
+    border-radius: 22px; background: var(--bg-elev); border: 1px solid var(--line);
+  }
+  .app-tile {
+    flex-direction: row; align-items: center; gap: 14px; text-align: left;
+    padding: 14px 0; border: 0; border-radius: 0; background: none; overflow: visible; isolation: auto;
+  }
+  .app-tile::before { display: none; }
+  .app-tile + .app-tile::after { content: ""; position: absolute; top: 0; left: 78px; right: 0; height: 1px; background: var(--line); }
+  a.app-tile:hover, a.app-tile:active { transform: none; box-shadow: none; }
+  a.app-tile:active { opacity: 0.6; }
+  .app-tile__icon {
+    width: 64px; height: 64px; flex: none;
+    box-shadow: 0 0 0 0.5px var(--line-strong), 0 8px 16px -10px color-mix(in srgb, var(--accent) 80%, transparent);
+  }
+  a.app-tile:hover .app-tile__icon { transform: none; }
+  .app-tile__body { flex: 1; align-items: flex-start; }
+  .app-tile__name { margin-top: 0; font-size: 1.05rem; }
+  .app-tile__meta { margin-top: 1px; font-size: 0.86rem; }
+  .app-tile .status { position: static; margin-top: 6px; padding: 2px 8px; font-size: 0.66rem; }
+  .app-tile__go {
+    flex: none; margin: 0; height: 32px; padding: 0 16px; border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent);
+    font-size: 0.82rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase;
+  }
+  .app-tile__go svg { display: none; }
+  :root[data-theme="dark"] .app-tile__go { color: color-mix(in srgb, var(--accent) 70%, #fff); }
+  .app-tile--next { display: none; }
+  .more-apps .app-tile { flex: none; }
+
+  .bento__item { padding: 22px; border-radius: 22px; }
+  .bento__title { margin-top: 18px; }
+  .step { padding: 20px; gap: 16px; border-radius: 20px; }
+  .step__num { font-size: 2.2rem; }
+  .quote { font-size: 1.35rem; }
+  .faq summary { padding: 18px; }
+  .faq details p { padding: 0 18px 18px; }
+  .cta { padding: 52px 20px; border-radius: 28px; }
+  .footer { padding-top: 48px; }
+  .footer__wordmark { margin-top: 40px; }
+
+  /* Detay: App Store ürün sayfası düzeni */
+  .detail-hero { padding: 16px 0 28px; }
+  .detail-hero__grid { margin-top: 20px; gap: 0; }
+  .detail-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: center; }
+  .detail-hero__icon { width: 96px; height: 96px; }
+  .detail-hero__title { margin-top: 0; font-size: 1.85rem; line-height: 1.1; }
+  .detail-hero__tagline { margin-top: 4px; font-size: 1rem; color: var(--muted); }
+  .detail-hero__meta { display: none; }
+  .detail-hero__actions { margin-top: 22px; gap: 14px 18px; }
+  /* Telefonda maket yok; ekran görüntüleri (varsa) aşağıdaki galeride */
+  .info-strip {
+    grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(118px, 1fr);
+    overflow-x: auto; scrollbar-width: none; margin-inline: -4px;
+  }
+  .info-strip::-webkit-scrollbar { display: none; }
+  .info-strip__cell { padding: 14px 10px; }
+  .detail-section { padding-top: 40px; }
+  .detail-desc { font-size: 1.08rem; }
+  .features-grid { gap: 0; border: 1px solid var(--line); border-radius: 18px; background: var(--bg-elev); overflow: hidden; }
+  .feature { border: 0; border-radius: 0; background: none; padding: 14px 16px; }
+  .feature + .feature { border-top: 1px solid var(--line); }
+  .aside-card { position: static; }
+  .shots img { height: 440px; border-radius: 24px; }
+
+  .legal-head { padding: 40px 0 28px; }
+  .legal { padding: 32px 0 72px; }
+  .prose h2 { margin-top: 40px; font-size: 1.3rem; }
+}
+
 /* ---------- Animasyonlar ---------- */
 @keyframes floatY { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
 @keyframes ping { 75%, 100% { transform: scale(2.4); opacity: 0; } }
 @keyframes marquee { to { transform: translateX(-50%); } }
 @keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+@keyframes sheetIn { from { opacity: 0; transform: translateY(-8px); } }
 @keyframes drift { to { transform: translate(6%, -4%) rotate(8deg); } }
 
 @media (prefers-reduced-motion: reduce) {

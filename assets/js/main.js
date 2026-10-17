@@ -6,21 +6,42 @@
   const { esc, asset, accentOf, detailHref, icons, statusBadge, phoneScreen, loadApps, reveal, t, tx } = B;
   const $ = (sel) => document.querySelector(sel);
 
+  // Masaüstünde ikon kartı, telefonda App Store tarzı liste satırı (düzen CSS'te değişir)
   const tileHTML = (app, i) => `
     <a href="${esc(detailHref(app))}" class="app-tile reveal" style="--accent:${accentOf(app)};--d:${i * 70}ms" aria-label="${esc(app.name)}: ${esc(tx(app.tagline))}">
-      ${statusBadge(app)}
       <img class="app-tile__icon" src="${esc(asset(app.icon))}" alt="" width="232" height="232" loading="lazy">
-      <span class="app-tile__name">${esc(app.name)}</span>
-      <span class="app-tile__meta">${esc(tx(app.category) || tx(app.tagline))}</span>
+      <span class="app-tile__body">
+        <span class="app-tile__name">${esc(app.name)}</span>
+        <span class="app-tile__meta">${esc(tx(app.category) || tx(app.tagline))}</span>
+        ${statusBadge(app)}
+      </span>
       <span class="app-tile__go">${t('view')} ${icons.arrow}</span>
     </a>`;
 
   const nextTileHTML = (i) => `
     <div class="app-tile app-tile--next reveal" style="--d:${i * 70}ms">
       <span class="app-tile__icon">${icons.plus}</span>
-      <span class="app-tile__name">${t('next')}</span>
-      <span class="app-tile__meta">${t('nextSub')}</span>
+      <span class="app-tile__body">
+        <span class="app-tile__name">${t('next')}</span>
+        <span class="app-tile__meta">${t('nextSub')}</span>
+      </span>
     </div>`;
+
+  // App Store "Bugün" sekmesi tarzı kart (yalnızca telefonda görünür)
+  const todayCardHTML = (app) => `
+    <a href="${esc(detailHref(app))}" class="today-card" style="--accent:${accentOf(app)}">
+      <span class="today-card__top">
+        <span class="today-card__eyebrow">${t('featured')}</span>
+        <span class="today-card__title">${esc(app.name)}</span>
+        <span class="today-card__tag">${esc(tx(app.tagline))}</span>
+      </span>
+      <img class="today-card__art" src="${esc(asset(app.icon))}" alt="" width="150" height="150">
+      <span class="today-card__bar">
+        <img src="${esc(asset(app.icon))}" alt="" width="44" height="44">
+        <span class="today-card__info"><strong>${esc(app.name)}</strong><span>${esc(tx(app.category))}</span></span>
+        <span class="pill">${t('open')}</span>
+      </span>
+    </a>`;
 
   // Öne çıkan: "featured": true olan, yoksa ilk yayındaki uygulama
   const pickFeatured = (apps) => apps.find((a) => a.featured) || apps.find((a) => a.status === 'live') || apps[0];
@@ -34,6 +55,7 @@
     stage.style.setProperty('--accent', accentOf(featured));
     phone.style.setProperty('--accent', accentOf(featured));
     phone.innerHTML = phoneScreen(featured);
+    $('#todayCard').innerHTML = todayCardHTML(featured);
 
     // Diğer uygulamaların ikonları telefonun etrafında süzülür
     stage.querySelectorAll('.orbit').forEach((el) => el.remove());

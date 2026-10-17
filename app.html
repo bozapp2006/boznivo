@@ -14,18 +14,31 @@
   <meta property="og:image" content="https://boznivo.com/assets/images/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
 
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Boznivo">
+  <meta name="format-detection" content="telephone=no">
   <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
   <link rel="preload" href="/apps.json" as="fetch" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <!-- Yazı tipleri sayfayı bekletmeden yüklenir; iPhone/Mac'te sistem fontu (SF Pro) kullanılır -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+  <link rel="stylesheet" href="/assets/css/style.css?v=8">
   <script>
     (function () {
       var d = document.documentElement, l;
       d.classList.add('js');
-      try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') d.dataset.theme = t; l = localStorage.getItem('lang'); } catch (e) {}
+      try { var t = localStorage.getItem('theme'); l = localStorage.getItem('lang'); } catch (e) {}
+      if (t === 'light' || t === 'dark') {
+        d.dataset.theme = t;
+        // Safari'nin üst/alt çubuk rengi seçilen temayla aynı olsun
+        [].forEach.call(document.querySelectorAll('meta[name="theme-color"]'), function (m) { m.media = 'all'; m.content = t === 'dark' ? '#09090b' : '#fbfbfa'; });
+      }
       if (l !== 'tr' && l !== 'en') l = /^tr\b/i.test(navigator.language || '') ? 'tr' : 'en';
       d.lang = l;
       if (l === 'en') { d.classList.add('i18n-pending'); setTimeout(function () { d.classList.remove('i18n-pending'); }, 2000); }
@@ -50,18 +63,30 @@
         <button type="button" class="lang-btn" data-lang-toggle><span data-l="tr">TR</span><i>/</i><span data-l="en">EN</span></button>
         <button type="button" class="icon-btn" data-theme-toggle aria-label="Temayı değiştir"></button>
         <a href="/#contact" class="btn btn--primary btn--sm nav__cta" data-i18n="nav.cta">İletişime geç</a>
-        <button type="button" class="icon-btn nav__menu-btn" data-menu-toggle aria-label="Menüyü aç" aria-expanded="false" aria-controls="mobileMenu">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
-        </button>
+        <button type="button" class="icon-btn nav__menu-btn" data-menu-toggle aria-label="Menüyü aç" aria-expanded="false" aria-controls="mobileMenu"><span class="burger" aria-hidden="true"><span></span><span></span></span></button>
       </div>
     </div>
-    <nav id="mobileMenu" class="mobile-menu" aria-label="Mobil menü">
-      <a href="/#apps" data-i18n="nav.apps">Uygulamalar</a>
-      <a href="/#principles" data-i18n="nav.principles">İlkeler</a>
-      <a href="/#about" data-i18n="nav.about">Hakkımda</a>
-      <a href="/#faq" data-i18n="nav.faq">SSS</a>
-      <a href="/#contact" data-i18n="nav.contact">İletişim</a>
-    </nav>
+    <div id="mobileMenu" class="mobile-menu">
+      <nav class="sheet-group" aria-label="Mobil menü" data-i18n-attr="aria-label:nav.menu">
+        <a href="/#apps"><span data-i18n="nav.apps">Uygulamalar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+        <a href="/#principles"><span data-i18n="nav.principles">İlkeler</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+        <a href="/#about"><span data-i18n="nav.about">Hakkımda</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+        <a href="/#faq"><span data-i18n="nav.faq">SSS</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+        <a href="/#contact"><span data-i18n="nav.contact">İletişim</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+      </nav>
+      <p class="sheet-label" data-i18n="menu.lang">Dil</p>
+      <div class="segmented" role="group" aria-label="Dil" data-i18n-attr="aria-label:menu.lang">
+        <button type="button" data-set-lang="tr">Türkçe</button>
+        <button type="button" data-set-lang="en">English</button>
+      </div>
+      <p class="sheet-label" data-i18n="menu.theme">Görünüm</p>
+      <div class="segmented" role="group" aria-label="Görünüm" data-i18n-attr="aria-label:menu.theme">
+        <button type="button" data-set-theme="light" data-i18n="menu.light">Açık</button>
+        <button type="button" data-set-theme="dark" data-i18n="menu.dark">Koyu</button>
+        <button type="button" data-set-theme="auto" data-i18n="menu.auto">Otomatik</button>
+      </div>
+      <a href="mailto:support@boznivo.com" class="btn btn--primary sheet-cta">support@boznivo.com</a>
+    </div>
   </header>
 
   <main id="main">
@@ -86,8 +111,8 @@
     </div>
   </footer>
 
-  <script src="/assets/js/i18n.js" defer></script>
-  <script src="/assets/js/common.js" defer></script>
-  <script src="/assets/js/app.js" defer></script>
+  <script src="/assets/js/i18n.js?v=8" defer></script>
+  <script src="/assets/js/common.js?v=8" defer></script>
+  <script src="/assets/js/app.js?v=8" defer></script>
 </body>
 </html>

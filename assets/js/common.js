@@ -45,6 +45,9 @@
       b.setAttribute('aria-label', t('langSwitch'));
       b.querySelectorAll('[data-l]').forEach((s) => s.classList.toggle('is-active', s.dataset.l === lang));
     });
+    document.querySelectorAll('[data-set-lang]').forEach((b) =>
+      b.setAttribute('aria-pressed', String(b.dataset.setLang === lang))
+    );
   }
 
   function setLang(next) {
@@ -151,26 +154,53 @@
   const media = window.matchMedia('(prefers-color-scheme: dark)');
   const currentTheme = () => root.dataset.theme || (media.matches ? 'dark' : 'light');
 
+  // Safari'nin üst/alt çubuk rengi sayfa temasını izlesin (elle seçimde de)
+  // Özgün değerler <head>'deki betik onları değiştirmeden önceki halleridir
+  const THEME_META = { light: ['#fbfbfa', '(prefers-color-scheme: light)'], dark: ['#09090b', '(prefers-color-scheme: dark)'] };
+  const themeMetas = [...document.querySelectorAll('meta[name="theme-color"]')];
+
   function paintTheme() {
     const dark = currentTheme() === 'dark';
     document.querySelectorAll('[data-theme-toggle]').forEach((b) => {
       b.innerHTML = dark ? icons.sun : icons.moon;
       b.setAttribute('aria-label', dark ? t('themeToLight') : t('themeToDark'));
     });
+    const choice = root.dataset.theme || 'auto';
+    document.querySelectorAll('[data-set-theme]').forEach((b) =>
+      b.setAttribute('aria-pressed', String(b.dataset.setTheme === choice))
+    );
+    // Elle seçimde media sorgusu devre dışı; "Otomatik"te sistem ayarına geri dön
+    themeMetas.forEach((m, i) => {
+      const [color, query] = i === 0 ? THEME_META.light : THEME_META.dark;
+      m.media = root.dataset.theme ? 'all' : query;
+      m.content = root.dataset.theme ? (dark ? THEME_META.dark[0] : THEME_META.light[0]) : color;
+    });
+  }
+
+  // 'light' | 'dark' | 'auto' (sistem ayarını izle)
+  function setTheme(choice) {
+    if (choice === 'auto') delete root.dataset.theme;
+    else root.dataset.theme = choice;
+    try {
+      if (choice === 'auto') localStorage.removeItem('theme');
+      else localStorage.setItem('theme', choice);
+    } catch { /* gizli mod vb. */ }
+    paintTheme();
   }
 
   function initToggles() {
     document.querySelectorAll('[data-theme-toggle]').forEach((b) =>
-      b.addEventListener('click', () => {
-        const next = currentTheme() === 'dark' ? 'light' : 'dark';
-        root.dataset.theme = next;
-        try { localStorage.setItem('theme', next); } catch { /* gizli mod vb. */ }
-        paintTheme();
-      })
+      b.addEventListener('click', () => setTheme(currentTheme() === 'dark' ? 'light' : 'dark'))
+    );
+    document.querySelectorAll('[data-set-theme]').forEach((b) =>
+      b.addEventListener('click', () => setTheme(b.dataset.setTheme))
     );
     media.addEventListener?.('change', paintTheme);
     document.querySelectorAll('[data-lang-toggle]').forEach((b) =>
       b.addEventListener('click', () => setLang(lang === 'tr' ? 'en' : 'tr'))
+    );
+    document.querySelectorAll('[data-set-lang]').forEach((b) =>
+      b.addEventListener('click', () => setLang(b.dataset.setLang))
     );
   }
 
@@ -186,11 +216,14 @@
     if (!btn) return;
     const setOpen = (open) => {
       nav.classList.toggle('is-open', open);
+      root.classList.toggle('menu-open', open); // menü açıkken arka sayfa kaymasın
       btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? t('menuClose') : t('menuOpen'));
     };
     btn.addEventListener('click', () => setOpen(!nav.classList.contains('is-open')));
     nav.addEventListener('click', (e) => { if (e.target.closest('.mobile-menu a')) setOpen(false); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+    window.matchMedia('(min-width: 900px)').addEventListener?.('change', (e) => { if (e.matches) setOpen(false); });
   }
 
   /* ---------- Belirme animasyonu ---------- */

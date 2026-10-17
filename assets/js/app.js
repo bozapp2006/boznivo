@@ -46,15 +46,24 @@
     const others = apps.filter((a) => a.id !== app.id)
       .map((a) => `
         <a href="${esc(detailHref(a))}" class="app-tile" style="--accent:${accentOf(a)}">
-          ${statusBadge(a)}
           <img class="app-tile__icon" src="${esc(asset(a.icon))}" alt="" width="232" height="232" loading="lazy">
-          <span class="app-tile__name">${esc(a.name)}</span>
-          <span class="app-tile__meta">${esc(tx(a.category) || tx(a.tagline))}</span>
+          <span class="app-tile__body">
+            <span class="app-tile__name">${esc(a.name)}</span>
+            <span class="app-tile__meta">${esc(tx(a.category) || tx(a.tagline))}</span>
+            ${statusBadge(a)}
+          </span>
           <span class="app-tile__go">${t('view')} ${icons.arrow}</span>
         </a>`)
       .join('');
 
-    const infoRow = (label, value) => (value ? `<div class="label-card__row"><span>${label}</span><strong>${value}</strong></div>` : '');
+    // App Store'daki bilgi şeridi gibi: kategori, platform, durum, geliştirici
+    const infoCell = (label, value) => (value ? `<div class="info-strip__cell"><span>${label}</span><strong>${value}</strong></div>` : '');
+    const infoStrip = [
+      infoCell(t('category'), esc(category)),
+      infoCell(t('platforms'), esc(platforms)),
+      infoCell(t('status'), app.status === 'live' ? t('live') : t('soon')),
+      infoCell(t('developer'), 'Boznivo'),
+    ].join('');
 
     mount.innerHTML = `
       <section class="detail-hero" style="--accent:${accent}">
@@ -62,9 +71,13 @@
           <a href="/#apps" class="back-link">${icons.arrowLeft}${t('allApps')}</a>
           <div class="detail-hero__grid">
             <div>
-              <img class="detail-hero__icon reveal" src="${esc(asset(app.icon))}" alt="${esc(t('iconAlt', { name: app.name }))}" width="116" height="116">
-              <h1 class="detail-hero__title reveal" style="--d:60ms">${esc(app.name)}</h1>
-              <p class="detail-hero__tagline reveal" style="--d:120ms">${esc(tagline)}</p>
+              <div class="detail-head">
+                <img class="detail-hero__icon reveal" src="${esc(asset(app.icon))}" alt="${esc(t('iconAlt', { name: app.name }))}" width="116" height="116">
+                <div class="detail-head__text">
+                  <h1 class="detail-hero__title reveal" style="--d:60ms">${esc(app.name)}</h1>
+                  <p class="detail-hero__tagline reveal" style="--d:120ms">${esc(tagline)}</p>
+                </div>
+              </div>
               <div class="detail-hero__meta reveal" style="--d:180ms">
                 ${statusBadge(app, 'status--inline')}
                 ${category ? `<span class="tag">${esc(category)}</span>` : ''}
@@ -83,7 +96,11 @@
         </div>
       </section>
 
-      <section class="section section--tight-top">
+      <div class="container">
+        <div class="info-strip reveal">${infoStrip}</div>
+      </div>
+
+      <section class="section detail-section">
         <div class="container detail-body">
           <div>
             ${description ? `
@@ -99,13 +116,6 @@
 
           <aside class="aside-card reveal">
             <div class="label-card">
-              <div class="label-card__head">${t('details')}</div>
-              ${infoRow(t('developer'), 'Boznivo')}
-              ${infoRow(t('category'), esc(category))}
-              ${infoRow(t('platforms'), esc(platforms))}
-              ${infoRow(t('status'), app.status === 'live' ? t('live') : t('soon'))}
-            </div>
-            <div class="label-card" style="margin-top:14px">
               <div class="label-card__head">${icons.shield}${t('privacy')}</div>
               <div class="label-card__row" style="display:block">
                 <p>${t('privacyNote')}</p>
